@@ -46,7 +46,12 @@ $map = array(
         'controller' => 'Controller',
         'action' => 'inicio',
         'nivel' =>1
- )
+    ),
+    'login'=>array(
+        'controller'=>'loginController',
+        'action'=>'login',
+        'nivel'=> 0
+    )
     
 );
 // Parseo de la ruta
