@@ -48,7 +48,7 @@ $map = array(
         'nivel' =>1
     ),
     'login'=>array(
-        'controller'=>'loginController',
+        'controller'=>'Controller',
         'action'=>'login',
         'nivel'=> 0
     )
