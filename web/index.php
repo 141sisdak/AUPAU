@@ -9,7 +9,7 @@ require_once __DIR__ . '/../app/Controller.php';
 
 session_start();
 //Si todavía no se ha iniciado sesión inicializamos la variable sesion(rol) a 0 para que pueda acceder a login y registro
-if(!isset($_SESSION["user"])){
+if(!isset($_SESSION["usuario"])){
     $_SESSION["rol"] = 0;
 }
 
@@ -45,7 +45,7 @@ $map = array(
     'inicio' => array(
         'controller' => 'Controller',
         'action' => 'inicio',
-        'nivel' =>1
+        'nivel' =>0
     ),
     'login'=>array(
         'controller'=>'Controller',
@@ -82,6 +82,7 @@ if (method_exists($controlador['controller'], $controlador['action']) && $contro
        
         header("Status: 403 Forbidden");
         echo "<html><body><h1>No tienes permisos suficientes para realizar esa acción</h1><a href='index.php?ctl=inicio'>Volver</a></body></html>";
+       
         
     }else{
         header('Status: 404 Not Found');

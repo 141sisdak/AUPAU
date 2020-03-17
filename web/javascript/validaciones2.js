@@ -2,15 +2,7 @@ $(function () {
 
 
 
-    $("form").submit(function (event) {
-        $(".errorLogin").css("display", "none");
-        $("#usuario,#password").css("border", "1px solid lightgray")
-
-        if (!validacionLogin()) {
-            event.preventDefault();
-            alert("No se ha enviado el formulario");
-        }
-    })
+    
 
 
     function validacionLogin() {

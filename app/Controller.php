@@ -9,9 +9,49 @@ class Controller
     {
         try {
 
-            if(isset($_POST["enviar"])){
+            $params = array(
+                'usuario'=>'',
+                'password'=>''
+            );
+
+            if(isset($_POST["enviar"])
+            && isset($_POST["usuario"])
+            && isset($_POST["password"])){
+
+               $datos = array();
 
 
+               $datos["usuario"] = recoge("usuario");
+               $datos["password"] = recoge("password");
+
+               $validacion = new Validacion();
+
+               $regla = array(
+                   array(
+                   'name'=>'usuario',
+                   'regla'=>'no-empty,usuario'
+               ),
+               array(
+                   'name'=>'password',
+                   'regla'=>'no-empty,password2'
+               )
+               );
+
+               $validaciones = $validacion->rules($regla,$datos);
+
+               if($validaciones===true){
+                   $m = new Model();
+                   if($resultado = $m->validaLogin($datos["usuario"], $datos["password"])){
+
+                    $_SESSION["usuario"] = $resultado["usuario"];
+                    $_SESSION["rol"] = $resultado["rol"];
+                    
+
+                       header("Location: index.php?ctl=inicio");
+                   }else{
+                       $params["mensaje"]="Usuario o contraseña incorrectos";
+                   }
+               }
 
             }
 
@@ -25,6 +65,8 @@ class Controller
             //header('Location: index.php?ctl=error');
         }
     }
-}
 
-?>
+    public function inicio(){
+        require __DIR__ . "/templates/inicio.php";
+    }
+}

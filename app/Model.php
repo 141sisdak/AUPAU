@@ -13,6 +13,24 @@ class Model extends PDO
         $this->conexion->exec("set names utf8");
         $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
+
+    public function validaLogin($usuario, $password){
+        $select = $this->conexion->prepare("SELECT * FROM usuarios WHERE usuario = :usuario AND password = :pass");
+
+        $select->bindValue(":usuario",$usuario);
+        $select->bindValue(":pass", $password);
+
+        $select->execute();
+
+        $num_reg = $select->rowCount();
+
+        if($num_reg ==0){
+            return false;
+        }else{
+            return $select->fetch();
+        }
+
+    }
     
    
 }

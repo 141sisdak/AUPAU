@@ -157,13 +157,35 @@ class Validacion
      */
     protected function _password($campo, $valor)
     {
-        if (preg_match("/^[\w,# $ %]{4,4}$/", $valor)) {
+        if (preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/", $valor)) {
             return true;
         } else {
-            $this->mensaje[$campo][] = "Debes introducir 4 carácteres - Permitidos: $ % #";
+            $this->mensaje[$campo][] = "Los valores de contraseña introducidos son incorrectos";
             return false;
         }
     }
+
+    protected function _password2($campo, $valor)
+    {
+        if (preg_match("/^[\w,# $ %]{3}$/", $valor)) {
+            return true;
+        } else {
+            $this->mensaje[$campo][] = "Los valores de contraseña introducidos son incorrectos";
+            return false;
+        }
+    }
+
+    protected function _usuario($campo, $valor)
+    {
+        if (preg_match("/^[\w]{0,30}$/", $valor)) {
+            return true;
+        } else {
+            $this->mensaje[$campo][] = "Máximo de carácteres permitido excedido (30)";
+            return false;
+        }
+    }
+
+    
     
     /**
      * Metodo de verificacion de tipo email

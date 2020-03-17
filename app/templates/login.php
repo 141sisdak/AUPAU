@@ -1,5 +1,20 @@
 
 <?php ob_start() ?>
+<?php if(isset($params['mensaje'])) :?>
+<b><span style="color: red;"><?php echo $params['mensaje'] ?></span></b>
+<?php endif; ?>
+
+<?php
+if(isset($validacion->mensaje)){
+    if (is_object ($validacion)){
+        foreach ($validacion->mensaje as $errores) {
+            foreach ($errores as $error)?>
+            <b><span style="color: red;"><?php echo $error?></span></b><br>
+            <?php 
+    }}
+    
+}
+?>
 <form name="formLogin" action="index.php?ctl=login" method="post">
 
 <label for="lblNombre">Usuario</label>
