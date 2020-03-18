@@ -45,12 +45,17 @@ $map = array(
     'inicio' => array(
         'controller' => 'Controller',
         'action' => 'inicio',
-        'nivel' =>0
+        'nivel' =>1
     ),
     'login'=>array(
         'controller'=>'Controller',
         'action'=>'login',
         'nivel'=> 0
+    ),
+    'rescate'=>array(
+        'controller'=>'Controller',
+        'action'=>'rescate',
+        'nivel'=> 1
     )
     
 );
@@ -82,6 +87,7 @@ if (method_exists($controlador['controller'], $controlador['action']) && $contro
        
         header("Status: 403 Forbidden");
         echo "<html><body><h1>No tienes permisos suficientes para realizar esa acción</h1><a href='index.php?ctl=inicio'>Volver</a></body></html>";
+        echo $_SESSION["usuario"];
        
         
     }else{

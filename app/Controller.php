@@ -69,4 +69,29 @@ class Controller
     public function inicio(){
         require __DIR__ . "/templates/inicio.php";
     }
+
+    public function rescate(){
+
+        $m = new Model();
+
+        try{
+
+           if($resultado = $m->getRescates()){
+               $params = array(
+                   'animales'=>$m->getRescates()
+               );
+           }else{
+               $params["mensaje"] = "No existen rescates";
+           }
+
+        }catch (Exception $e) {
+            error_log("Excepcion producida el ". date("d-m-YY") . " a las " .date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
+            //header('Location: index.php?ctl=error');
+        } catch (Error $e) {
+            error_log("Error producido el ". date("d-m-YY") . " a las " .date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
+            //header('Location: index.php?ctl=error');
+        }
+
+        require __DIR__ . "/templates/rescate.php";
+    }
 }

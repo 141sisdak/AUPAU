@@ -1,1 +1,6 @@
 
+Excepcion producida el 17-03-20202020 a las 21:03:00SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.esterilizado,
+        F.numchip,
+        F.ult_despa,
+        L.nombre,
+   ' at line 7
