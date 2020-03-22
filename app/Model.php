@@ -58,6 +58,63 @@ class Model extends PDO
         
 
     }
+
+    public function getEnfermedades($id){
+        $select = $this->conexion->query("SELECT E.enfermedad as tipo
+        FROM enfermedades_animal A INNER JOIN enfermedades E 
+        ON A.id_enfermedad = E.id 
+        WHERE A.id_animal='".$id."'");
+
+        $select->execute();
+
+        $numRows = $select->rowCount();
+
+        if($numRows>0){
+            return $select->fetchAll();
+        }else{
+            return false;
+        }
+
+       
+    }
+
+    public function getVacunas($id){
+        $select = $this->conexion->query("SELECT V.nombre AS tipo 
+        FROM vacunas_animal A 
+        INNER JOIN vacunas V 
+        ON A.id_vacuna = V.id WHERE 
+        A.id_animal='".$id."'");
+
+        $select->execute();
+
+        $numRows = $select->rowCount();
+
+        if($numRows>0){
+            return $select->fetchAll();
+        }else{
+            return false;
+        }
+    }
+
+    public function getTratamientos($id){
+        $select = $this->conexion->query("SELECT T.tratamiento AS tipo
+        FROM tratamientos_animal A
+        INNER JOIN tratamientos T
+        ON A.id_tratamiento = T.id
+        WHERE A.id_animal ='".$id."'");
+
+        $select->execute();
+
+        $numRows = $select->rowCount();
+
+        if($numRows>0){
+            return $select->fetchAll();
+        }else{
+            return false;
+        }
+    }
+
+
     
    
 }

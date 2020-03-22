@@ -1,8 +1,10 @@
-body{
-    margin-top: 100px;
-    margin-left: 100px;
+tr{
+    white-space:nowrap;
 }
 .errorLogin{
     display: none;
     color: red;
+}
+.iconoConf{
+    height: 30px;
 }

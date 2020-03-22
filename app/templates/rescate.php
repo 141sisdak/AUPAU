@@ -34,12 +34,53 @@
 <td><?php echo $animal['tamanyo']?></td>
 <td><?php echo $animal['localidad']?></td>
 <td><?php echo $animal['refugio']?></td>
+<td>
+  <div class="dropdown">
+  <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
+  <img src="../web/images/conf.svg" alt="configuracion" class="iconoConf"/>
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    
+   <a class="dropdown-item" href="index.php?ctl=verAnimal&id=<?php echo $animal['id']?>">Ver ficha</a>
+   <a class="dropdown-item" href="index.php?ctl=modificarAnimal&id=<?php echo $animal['id']?>">Modificar</a>
+   <a class="dropdown-item" href="index.php?ctl=eliminarAnimal&id=<?php echo $animal['id']?>">Eliminar</a>
+   
+
+  </div>
+</td>
+<td>
+
+<div class="dropdown">
+  <button class="btn btn-danger dropdown-toggle peticion" type="button" data-toggle="dropdown">enfermedades</button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   
+  </div>
+</div>
+</td>
+<td>
+<div class="dropdown">
+  <button class="btn btn-warning dropdown-toggle peticion" type="button" data-toggle="dropdown">vacunas</button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   
+  </div>
+</div>
+</td>
+<td>
+<div class="dropdown">
+  <button class="btn btn-info dropdown-toggle peticion" type="button" data-toggle="dropdown">tratamientos</button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   
+  </div>
+</div>
+</td>
 </tr>
 <?php endforeach; ?>
 
 </table>
 
+
 </table>
+
 </div>
 <?php $contenido = ob_get_clean() ?>
 <?php include 'layout.php' ?>
