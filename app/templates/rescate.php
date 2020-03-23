@@ -2,6 +2,7 @@
 <?php if(isset($params['mensaje'])) :?>
 <b><span style="color: red;"><?php echo $params['mensaje'] ?></span></b>
 <?php endif; ?>
+
 <div class="table-responsive-md">
 <table class="table">
 <tr>
@@ -82,5 +83,6 @@
 </table>
 
 </div>
+
 <?php $contenido = ob_get_clean() ?>
 <?php include 'layout.php' ?>

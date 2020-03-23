@@ -45,6 +45,7 @@ class Model extends PDO
         F.ult_despa,
         E.nombre as especie,        
         T.tamanyo,
+        RA.nombre as raza,
         L.localidad,
         R.nombre as refugio
         FROM 
@@ -52,7 +53,8 @@ class Model extends PDO
         INNER JOIN especie E ON F.especie = E.id 
         INNER JOIN tamanyos T ON F.tamanyo = T.id
         INNER JOIN localidades L ON  F.localidad = L.id
-        INNER JOIN refugios R ON F.refugio = R.id"
+        INNER JOIN refugios R ON F.refugio = R.id
+        INNER JOIN raza RA ON F.especie = RA.id"
     );
         return $select->fetchAll();
         
@@ -112,6 +114,39 @@ class Model extends PDO
         }else{
             return false;
         }
+    }
+
+    public function getAnimal($id){
+        $select = $this->conexion->query("SELECT 
+        F.id,
+        F.nombre,
+        F.fechaNac,
+        F.edad,
+        F.fechaIngreso,
+        F.estadoAdop,
+        F.esterilizado,
+        F.numchip,
+        F.sexo,
+        F.descripcion,
+        F.comentarios,
+        F.ult_despa,
+        E.nombre as especie,        
+        T.tamanyo,
+        L.localidad,
+        R.nombre as refugio,
+        RA.nombre as raza
+        FROM 
+        ficha_animal F 
+        INNER JOIN especie E ON F.especie = E.id 
+        INNER JOIN tamanyos T ON F.tamanyo = T.id
+        INNER JOIN localidades L ON  F.localidad = L.id
+        INNER JOIN refugios R ON F.refugio = R.id
+        INNER JOIN raza RA ON F.raza = RA.id
+        WHERE F.id = '".$id."'");
+
+        $select->execute();
+
+        return $select->fetch();
     }
 
 

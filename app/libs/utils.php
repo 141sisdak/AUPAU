@@ -34,5 +34,32 @@ function enviaEmail(){
     mail($to,$subject,$message, $headers);
 }
 
+//Funcion que busca valores null en el array y cambia el valor de la clave a "Sin datos"
+function setearNulos($params){
+    
+    foreach ($params as $key=>&$valor) {
+        if($valor==null){
+            $valor = "Sin datos";
+        }
+    }
+
+    return $params;
+}
+
+function setearNulosTabla(&$params){
+
+    foreach($params as &$campo){
+        foreach($campo as &$valor){
+         if($valor==null){
+           $valor = "Sin datos";
+         }
+        
+        }
+       }
+
+    return $params;
+
+}
+
 
 ?>

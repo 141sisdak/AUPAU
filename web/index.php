@@ -12,7 +12,7 @@ session_start();
 if(!isset($_SESSION["usuario"])){
     $_SESSION["rol"] = 0;
 }
-
+/*
 //Comprobamos si esta definida la sesión 'tiempo'.
 if(isset($_SESSION['tiempo']) ) {
     
@@ -38,7 +38,7 @@ if(isset($_SESSION['tiempo']) ) {
     //Activamos sesion tiempo.
     $_SESSION['tiempo'] = time();
 }
-
+*/
 // enrutamiento
 $map = array(
     
@@ -55,6 +55,11 @@ $map = array(
     'rescate'=>array(
         'controller'=>'Controller',
         'action'=>'rescate',
+        'nivel'=> 1
+    ),
+    'verAnimal'=>array(
+        'controller'=>'Controller',
+        'action'=>'verAnimal',
         'nivel'=> 1
     )
     

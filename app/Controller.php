@@ -76,10 +76,12 @@ class Controller
 
         try{
 
-           if($resultado = $m->getRescates()){
+           if($m->getRescates()){
                $params = array(
                    'animales'=>$m->getRescates()
                );
+              setearNulosTabla($params["animales"]);
+            
            }else{
                $params["mensaje"] = "No existen rescates";
            }
@@ -93,5 +95,50 @@ class Controller
         }
 
         require __DIR__ . "/templates/rescate.php";
+    }
+
+    public function verAnimal(){
+        if(isset($_GET["id"])){
+
+            $params = array(
+                'ficha'=>array(),
+                'enfermedades'=>array(),
+                'vacunas'=>array(),
+                'tratamientos'=>array()
+            );
+
+            try{
+
+                $m = new Model();                
+
+                $params["ficha"] = setearNulos($m->getAnimal($_GET["id"]));
+
+                if(!$params["enfermedades"] = $m->getEnfermedades($_GET["id"])){
+                    $params["enfermedades"][0]["tipo"]= "Sin datos";
+                } 
+
+                if(!$params["tratamientos"] = $m->getTratamientos($_GET["id"])){
+                    $params["tratamientos"][0]["tipo"]= "Sin datos";
+                } 
+
+                if(!$params["vacunas"] = $m->getVacunas($_GET["id"])){
+                    $params["vacunas"][0]["tipo"]= "Sin datos";
+                } 
+
+
+                
+
+
+            }catch (Exception $e) {
+            error_log("Excepcion producida el ". date("d-m-YY") . " a las " .date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
+            //header('Location: index.php?ctl=error');
+        } catch (Error $e) {
+            error_log("Error producido el ". date("d-m-YY") . " a las " .date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
+            //header('Location: index.php?ctl=error');
+        }
+
+        require __DIR__ . "/templates/fichaAnimal.php";
+           
+        }
     }
 }
