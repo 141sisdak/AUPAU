@@ -2,7 +2,8 @@ $(function () {
 
 
 
-    $("form").submit(function (event) {
+    $( "form" ).submit(function( event ) {
+        //Reseteamos cualquier estilo de fallos anteriores
         $(".errorLogin").css("display", "none");
         $("#usuario,#password").css("border", "1px solid lightgray")
 
@@ -10,9 +11,10 @@ $(function () {
             event.preventDefault();
             alert("No se ha enviado el formulario");
         }
-    })
+    });
+    
 
-
+//Funcion que recoge los dos campos y llama a las funciones encargadas de validar (validaUsuario y validaPassword)
     function validacionLogin() {
 
         var correcto = false;

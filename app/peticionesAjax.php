@@ -1,12 +1,12 @@
 <?php 
 require_once __DIR__ . '/../app/Model.php';
 $json = array();
-
-if(isset($_GET["id"]))
+$m = new Model();
+if(isset($_GET["id"])){
 
 header('Content-type: application/json');
 
-$m = new Model();
+
 
 switch($_GET["tipoPeticion"]){
     case "enfermedades":
@@ -40,6 +40,17 @@ switch($_GET["tipoPeticion"]){
 
     
 }
+}
 
+if(isset($_GET["especie"])){
+    $json =array();
+
+    if($json = $m->getRazasPorEspecie($_GET["especie"])){
+        echo json_encode($json);
+    }else{
+        echo json_encode(false);
+    }
+
+}
 ?>
 

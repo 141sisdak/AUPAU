@@ -1,4 +1,0 @@
-Excepcion producida el 23-03-20202020 a las 19:03:00SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'INNER JOIN raza RA ON F.raza = RA.id
-        WHERE F.id = 'G-1'' at line 25
-Excepcion producida el 23-03-20202020 a las 19:03:13SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'INNER JOIN raza RA ON F.raza = RA.id
-        WHERE F.id = 'G-1'' at line 24

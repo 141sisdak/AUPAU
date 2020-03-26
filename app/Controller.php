@@ -78,7 +78,12 @@ class Controller
 
            if($m->getRescates()){
                $params = array(
-                   'animales'=>$m->getRescates()
+                   'animales'=>$m->getRescates(),
+                   'tamanyos'=>$m->getTamanyos(),
+                   'localidades'=>$m->getLocalidades(),
+                   'especies'=>$m->getEspecies(),
+                   'razas'=>$m->getRazas(),
+                   'refugios'=>$m->getRefugios()
                );
               setearNulosTabla($params["animales"]);
             

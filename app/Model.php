@@ -149,6 +149,63 @@ class Model extends PDO
         return $select->fetch();
     }
 
+    public function getTamanyos(){
+
+        $select = $this->conexion->query("SELECT * FROM tamanyos");
+
+        $select->execute();
+
+        return $select->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+    public function getLocalidades(){
+
+        $select = $this->conexion->query("SELECT * FROM localidades");
+
+        $select->execute();
+
+        return $select->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+   public function getEspecies(){
+
+    $select = $this->conexion->query("SELECT * FROM especie");
+
+    $select->execute();
+
+    return $select->fetchAll(PDO::FETCH_ASSOC);
+   }
+
+   public function getRazas(){
+
+    $select = $this->conexion->query("SELECT * FROM raza");
+
+    $select->execute();
+
+    return $select->fetchAll(PDO::FETCH_ASSOC);
+   }
+
+   public function getRazasPorEspecie($idEspecie){
+
+    $select = $this->conexion->query("SELECT * FROM raza WHERE especie = $idEspecie");
+
+    $select->execute();
+
+    return $select->fetchAll(PDO::FETCH_ASSOC);
+
+   }
+
+   public function getRefugios(){
+
+    $select = $this->conexion->query("SELECT * FROM refugios");
+
+    $select->execute();
+
+    return $select->fetchAll(PDO::FETCH_ASSOC);
+   }
+
 
     
    
