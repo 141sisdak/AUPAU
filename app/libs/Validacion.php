@@ -110,11 +110,14 @@ class Validacion
      */
     protected function _numeric($campo, $valor)
     {
-        if (is_numeric($valor)) {
-            return true;
-        } else {
-            $this->mensaje[$campo][] = "el campo $campo debe de ser numerico";
-            return false;
+        if($valor!=""){
+        
+            if (is_numeric($valor)) {
+                return true;
+            } else {
+                $this->mensaje[$campo][] = "el campo $campo debe de ser numerico";
+                return false;
+            }
         }
     }
     /**
@@ -125,12 +128,16 @@ class Validacion
      */
     protected function _letras($campo, $valor)
     {
-        if (preg_match("/^[A-Za-zñÑ]*$/", $valor))
-            return true;
-            else {
-                $this->mensaje[$campo][] = "El campo $campo deben de ser solo letras";
-                return false;
-            }
+        if($valor!=""){
+        if (is_numeric($valor)) {
+            if (preg_match("/^[A-Za-zñÑ]*$/", $valor))
+                return true;
+                else {
+                    $this->mensaje[$campo][] = "El campo $campo deben de ser solo letras";
+                    return false;
+                }
+        }
+    }
     }
     /**
      * Metodo de verificacion de tipo numerico nivel

@@ -15,17 +15,17 @@ if(isset($validacion->mensaje)){
     
 }
 ?>
-<form name="formLogin" action="index.php?ctl=login" method="post">
+<form name="formLogin" action="index.php?ctl=login" method="post" id="formLogin">
 
 <label for="lblNombre">Usuario</label>
 <input type="text" name="usuario" id="usuario" autofocus>
-<span class="errorLogin" id="usuVacio">El campo no puede estar vacío</span>
-<span class="errorLogin" id="usuIncorrecto">Valores introducidos incorrectos</span><br><br>
+<span class="errorValidacion" id="usuVacio">El campo no puede estar vacío</span>
+<span class="errorValidacion" id="usuIncorrecto">Valores introducidos incorrectos</span><br><br>
 
 <label for="lblPassword">Password</label>
 <input type="text" name="password" id="password">
-<span class="errorLogin" id="passVacio">El campo no puede estar vacío</span>
-<span class="errorLogin" id="passIncorrecto">Valores introducidos incorrectos</span>
+<span class="errorValidacion" id="passVacio">El campo no puede estar vacío</span>
+<span class="errorValidacion" id="passIncorrecto">Valores introducidos incorrectos</span>
 
  
 <br><br>

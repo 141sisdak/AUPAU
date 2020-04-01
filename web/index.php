@@ -61,7 +61,13 @@ $map = array(
         'controller'=>'Controller',
         'action'=>'verAnimal',
         'nivel'=> 1
+    ),
+    'filtroRescate'=>array(
+        'controller'=>'Controller',
+        'action'=>'filtroRescate',
+        'nivel'=> 1
     )
+    
     
 );
 // Parseo de la ruta

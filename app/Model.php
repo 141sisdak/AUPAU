@@ -54,11 +54,26 @@ class Model extends PDO
         INNER JOIN tamanyos T ON F.tamanyo = T.id
         INNER JOIN localidades L ON  F.localidad = L.id
         INNER JOIN refugios R ON F.refugio = R.id
-        INNER JOIN raza RA ON F.especie = RA.id"
+        INNER JOIN raza RA ON F.especie = RA.id
+        WHERE activo = 1"
     );
         return $select->fetchAll();
         
 
+    }
+
+    public function getRescatesFiltro($sql){
+        $select = $this->conexion->query($sql);
+
+        $select->execute();
+
+        $numRows = $select->rowCount();
+
+        if($numRows>0){
+            return $select->fetchAll();
+        }else{
+            return false;
+        }
     }
 
     public function getEnfermedades($id){
@@ -189,7 +204,7 @@ class Model extends PDO
 
    public function getRazasPorEspecie($idEspecie){
 
-    $select = $this->conexion->query("SELECT * FROM raza WHERE especie = $idEspecie");
+    $select = $this->conexion->query("SELECT * FROM raza WHERE especie = $idEspecie AND id <> 1 order by nombre");
 
     $select->execute();
 

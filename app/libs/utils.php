@@ -61,5 +61,18 @@ function setearNulosTabla(&$params){
 
 }
 
+function validarFechas($desde, $hasta){
+    $ok = true;
+    $actual = time();
+    if(strtotime($hasta)>($actual)){
+        $ok = false;
+    }
+    if(strtotime($desde)>strtotime($hasta)){
+        $ok = false;
+    }
+
+    return $ok;
+}
+
 
 ?>

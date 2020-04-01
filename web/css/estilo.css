@@ -1,9 +1,10 @@
 tr{
     white-space:nowrap;
 }
-.errorLogin{
+.errorValidacion{
     display: none;
     color: red;
+    font-weight: bold;
 }
 .iconoConf{
     height: 30px;

@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../app/Model.php';
 $json = array();
 $m = new Model();
-if(isset($_GET["id"])){
+if(isset($_GET["idAnimal"])){
 
 header('Content-type: application/json');
 
@@ -10,7 +10,7 @@ header('Content-type: application/json');
 
 switch($_GET["tipoPeticion"]){
     case "enfermedades":
-        if( $json= $m->getEnfermedades($_GET["id"])){
+        if( $json= $m->getEnfermedades($_GET["idAnimal"])){
            
             echo json_encode($json);
         }else{
@@ -19,7 +19,7 @@ switch($_GET["tipoPeticion"]){
       
     break;
     case "vacunas":
-        if( $json= $m->getVacunas($_GET["id"])){
+        if( $json= $m->getVacunas($_GET["idAnimal"])){
            
             echo json_encode($json);
         }else{
@@ -28,7 +28,7 @@ switch($_GET["tipoPeticion"]){
       
     break;
     case "tratamientos":
-        if( $json= $m->getTratamientos($_GET["id"])){
+        if( $json= $m->getTratamientos($_GET["idAnimal"])){
            
             echo json_encode($json);
         }else{

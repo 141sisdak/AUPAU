@@ -13,7 +13,7 @@ $(".peticion").click(function(event){
   $(menu).empty();
   
   //Hacemos la peticion pasando el id y el tipo de peticion obtenidos anteiormente
-   $.getJSON("../app/peticionesAjax.php",{id:id_animal, tipoPeticion:tipo})
+   $.getJSON("../app/peticionesAjax.php",{idAnimal:id_animal, tipoPeticion:tipo})
    //En caso de éxito creamos un bucle que mostrará el tipo de peticion (enfermedades, vacunas o tratamientos) que tenga asignadas
    //ese animal
    .done(function(data){
@@ -74,5 +74,7 @@ $(".peticion").click(function(event){
    }
   
 });
+
+
    
 });
