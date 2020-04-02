@@ -1,6 +1,53 @@
 $(function () {
 
+crearListaCampos();
+
+function crearListaCampos(){
+
+    var tds = $("table tr:first").children();
+    
+    $.each(tds, function (indexInArray, valor) { 
+        
+        $('#listaCampos').append(
+            $("<li>",{"text":$(valor).text()}).prepend(
+                $("<input>",{
+                    'type':'checkbox',
+                    'value':$(valor).text()
+                }).attr("checked", true)
+            )
+        )
+    });
+    $('#listaCampos').append(
+        $('<div>',{
+            'class':'dropdown-divider'
+        })
+       
+    ).append(
+        $('<button>',{
+            'class':'btn btn-primary',
+            'name':'btnListaCampos',
+            'text':'Todos',
+            'id':'btnTodos'
+        })
+    )
+}
+//Funcion que setea los checkbox sin check
+$("#btnTodos").click(function(){
+    $( "#listaCampos input[type='checkbox']:not(:checked)")
+    .each(function(){
+       $(this).prop("checked",true).trigger("change");
+    })
+})
+
+$( "#listaCampos input[type='checkbox']").change(function (){
+  var indice =  $("table tr:first").find("th:contains(" +$(this).val() + ")").index();
+  
+  $("table tr:first").find("th:contains(" +$(this).val() + ")").toggle();
+  $("table td:nth-child(" + indice + ")").toggle();
  
+
+})
+
 $(".peticion").click(function(event){
  //Obtenemos el id del animal subiendo hasta el tr y seleccionando el primer td
  //****Sería mejor usar parents().find()??****************** */

@@ -14,26 +14,10 @@ if(isset($validacion->mensaje)){
 }
 ?>
  <div class="button-group">
-        <button type="button" class="btn btn-dark btn-sm dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <span class="caret">Personalizar campos</span></button>
+        <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <span class="caret">Personalizar campos</span></button>
 <ul class="dropdown-menu" id="listaCampos">
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  <li><sapn href="#" class="small" value="option1"><input type="checkbox"/>&nbsp;Option 1</span></li>
-  
+ 
+ 
 </ul>
   </div>
 </div>
