@@ -1,8 +1,8 @@
 $(function () {
 
-crearListaCampos();
+crearListaPersCampos();
 
-function crearListaCampos(){
+function crearListaPersCampos(){
 
     var tds = $("table tr:first").children();
     
@@ -47,7 +47,9 @@ $( "#listaCampos input[type='checkbox']").change(function (){
  
 
 })
-
+/**Esta funcion busca las enfermedes, vacunas y tratamientos de cada animal y relaiza una peticion Ajax para rellenar el dropdown.
+ * Además, crea un divider y un enlace para asignar una de las anteriores mencionadas
+ */
 $(".peticion").click(function(event){
  //Obtenemos el id del animal subiendo hasta el tr y seleccionando el primer td
  //****Sería mejor usar parents().find()??****************** */
@@ -75,6 +77,7 @@ $(".peticion").click(function(event){
             })
     );
        }
+//Creamos el divider
        crearDividerLink(id_animal, tipo);
       
 
@@ -88,7 +91,7 @@ $(".peticion").click(function(event){
                 'text':'Sin ' + tipo
             })
     );
-  //Para evitar repetir codigo creamos una funcion quey añade un divider y  un link para asignar uno nuevo a ese animal
+  
     crearDividerLink(id_animal, tipo);
     }
     
@@ -99,7 +102,7 @@ $(".peticion").click(function(event){
         console.warn(jqXHR.responseText);
     }
    });
- 
+ //Para evitar repetir codigo creamos una funcion quey añade un divider y  un link para asignar uno nuevo a ese animal
    function crearDividerLink(id, tipoPeticion){
     $(menu).append(
         $('<div>',{
@@ -119,6 +122,8 @@ $(".peticion").click(function(event){
         )
        );
    }
+
+   
   
 });
 

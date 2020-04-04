@@ -102,7 +102,33 @@ foreach ($params['animales'] as $animal){
 }
 ?>
 </table>
+<!--Mostramos la barra en caso de que hayan resultados-->
+<?php if($params["totalRegistros"]>1):?>
+<nav aria-label="Page navigation">
+  <ul class= "pagination">
+    <!--Mostramos la barra en caso de que hayan resultados-->
+    <li class="<?php if($params["pagina"]==1) echo "page-item disabled";else echo "disabled" ?>">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">Anterior</span>
+        <span class="sr-only">Anterior</span>
+      </a>
+    </li>
+    <?php for($i=1; $i<=$params["numPaginas"];$i++): ?>
+    <?php echo '<li class="page-item"><a class="page-link" href="index.php?ctl=rescate&pagina='.  $i . '">'.$i .'</a></li>' ?> 
+<?php endfor; ?>
 
+    <li class="<?php if($params["pagina"]==$params["totalRegistros"]) echo "page-item disabled";else echo "disabled" ?>">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">Siguiente</span>
+        <span class="sr-only">Siguiente</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<?php endif; ?>
+<?php echo $params["totalRegistros"]."<br>" ?>
+<?php echo $params["numPaginas"]."<br>" ?>
+<?php echo $params["pagina"]."<br>" ?>
 <?php 
 if(isset($params["mensajeTabla"])){
   ?>

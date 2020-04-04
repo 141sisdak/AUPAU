@@ -32,7 +32,10 @@ class Model extends PDO
 
     }
 
-    public function getRescates(){
+    public function getRescates($inicio, $regsPagina,$sql){
+        if($sql!=""){
+            
+        }
         $select = $this->conexion->query("SELECT 
         F.id,
         F.nombre,
@@ -55,11 +58,20 @@ class Model extends PDO
         INNER JOIN localidades L ON  F.localidad = L.id
         INNER JOIN refugios R ON F.refugio = R.id
         INNER JOIN raza RA ON F.especie = RA.id
-        WHERE activo = 1"
+        WHERE activo = 1
+        LIMIT $inicio, $regsPagina"
     );
         return $select->fetchAll();
         
 
+    }
+
+    public function getRescatesTotal(){
+        $select = $this->conexion->query("SELECT id FROM ficha_animal WHERE activo = 1");
+
+        $select->execute();
+
+        return $select->rowCount();
     }
 
     public function getRescatesFiltro($sql){

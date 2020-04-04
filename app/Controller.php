@@ -65,47 +65,6 @@ class Controller
         //header('Location: index.php?ctl=error');
         }
     }
-    
-    public function inicio()
-    {
-        require __DIR__ . "/templates/inicio.php";
-    }
-    
-    public function rescate()
-    {
-        
-        $m = new Model();
-        
-        try {
-            
-            if ($m->getRescates()) {
-                $params = array(
-                    'animales' => $m->getRescates(),
-                    'tamanyos' => $m->getTamanyos(),
-                    'localidades' => $m->getLocalidades(),
-                    'especies' => $m->getEspecies(),
-                    'razas' => $m->getRazas(),
-                    'refugios' => $m->getRefugios()
-                );
-                setearNulosTabla($params["animales"]);
-                
-            } else {
-                $params["mensaje"] = "No existen rescates";
-            }
-            
-        }
-        catch (Exception $e) {
-            error_log("Excepcion producida el " . date("d-m-YY") . " a las " . date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
-            //header('Location: index.php?ctl=error');
-        }
-        catch (Error $e) {
-            error_log("Error producido el " . date("d-m-YY") . " a las " . date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
-        //header('Location: index.php?ctl=error');
-        }
-        
-        require __DIR__ . "/templates/rescate.php";
-    }
-    
     public function verAnimal()
     {
         if (isset($_GET["id"])) {
@@ -150,6 +109,66 @@ class Controller
         }
     }
     
+    public function inicio()
+    {
+        require __DIR__ . "/templates/inicio.php";
+    }
+    
+    public function rescate()
+    {
+        
+
+        $pagina = isset($_GET["pagina"]) ? (int)$_GET["pagina"] : 1;
+
+        $regsPagina = 5;
+
+        $inicio = ($pagina>1) ? (($pagina * $regsPagina)- $regsPagina) :0;
+        
+        $m = new Model();
+
+        $sql = "";
+        
+        try {
+
+            
+            
+            if ($m->getRescates($inicio, $regsPagina, $sql)) {
+                $params = array(
+                    'animales' => $m->getRescates($inicio, $regsPagina,$sql),
+                    'tamanyos' => $m->getTamanyos(),
+                    'localidades' => $m->getLocalidades(),
+                    'especies' => $m->getEspecies(),
+                    'razas' => $m->getRazas(),
+                    'refugios' => $m->getRefugios()
+                );
+
+                
+
+                setearNulosTabla($params["animales"]);
+                $params["totalRegistros"] = $m->getRescatesTotal();
+                //Utilizamos la funcion ceil para redondear el resultado hacia arriba (0.3=1)
+                $params["numPaginas"] = ceil($params["totalRegistros"] / $regsPagina);
+                $params["pagina"] = $pagina;
+                
+            } else {
+                $params["mensaje"] = "No existen rescates";
+            }
+            
+        }
+        catch (Exception $e) {
+            error_log("Excepcion producida el " . date("d-m-YY") . " a las " . date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
+            //header('Location: index.php?ctl=error');
+        }
+        catch (Error $e) {
+            error_log("Error producido el " . date("d-m-YY") . " a las " . date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
+        //header('Location: index.php?ctl=error');
+        }
+        
+        require __DIR__ . "/templates/rescate.php";
+    }
+    
+   
+    
     public function filtroRescate()
     {
         
@@ -157,30 +176,6 @@ class Controller
             
             if (isset($_POST["filtrar"])) {
                 $m = new Model();
-                $sql = "SELECT 
-            F.id,
-            F.nombre,
-            F.fechaNac,
-            F.edad,
-            F.fechaIngreso,
-            F.estadoAdop,
-            F.esterilizado,
-            F.numchip,
-            F.ult_despa,
-            E.nombre as especie,        
-            T.tamanyo,
-            RA.nombre as raza,
-            L.localidad,
-            R.nombre as refugio
-            FROM 
-            ficha_animal F 
-            INNER JOIN especie E ON F.especie = E.id 
-            INNER JOIN tamanyos T ON F.tamanyo = T.id
-            INNER JOIN localidades L ON  F.localidad = L.id
-            INNER JOIN refugios R ON F.refugio = R.id
-            INNER JOIN raza RA ON F.especie = RA.id
-            WHERE activo = 1 ";
-                
                 $params = array(
                     'fechaNacDesde' => '',
                     'fechaNacHasta' => '',
@@ -206,6 +201,31 @@ class Controller
                     'razas' => $m->getRazas(),
                     'refugios' => $m->getRefugios()
                 );
+                $sql = "SELECT 
+            F.id,
+            F.nombre,
+            F.fechaNac,
+            F.edad,
+            F.fechaIngreso,
+            F.estadoAdop,
+            F.esterilizado,
+            F.numchip,
+            F.ult_despa,
+            E.nombre as especie,        
+            T.tamanyo,
+            RA.nombre as raza,
+            L.localidad,
+            R.nombre as refugio
+            FROM 
+            ficha_animal F 
+            INNER JOIN especie E ON F.especie = E.id 
+            INNER JOIN tamanyos T ON F.tamanyo = T.id
+            INNER JOIN localidades L ON  F.localidad = L.id
+            INNER JOIN refugios R ON F.refugio = R.id
+            INNER JOIN raza RA ON F.especie = RA.id
+            WHERE activo = 1 ";
+                
+               
                               
                 
                 if (!empty($_POST["fechaNacDesde"]) && !empty($_POST["fechaNacHasta"])) {
@@ -315,6 +335,7 @@ class Controller
                     }
                     
                     setearNulosTabla($params["animales"]);
+                    return $sql;
                 }else{
                     $params["mensaje"]= "Error en datos introducidos en el formulario";
                 }
