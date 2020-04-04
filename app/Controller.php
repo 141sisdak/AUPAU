@@ -173,6 +173,11 @@ class Controller
     {
         
         try {
+            $pagina = isset($_GET["pagina"]) ? (int)$_GET["pagina"] : 1;
+
+            $regsPagina = 5;
+    
+            $inicio = ($pagina>1) ? (($pagina * $regsPagina)- $regsPagina) :0;
             
             if (isset($_POST["filtrar"])) {
                 $m = new Model();
@@ -329,15 +334,20 @@ class Controller
                 
                 if ($validaciones === true) {
 
-                    if (!$params["animales"] = $m->getRescatesFiltro($sql)) {
+                    if (!$params["animales"] = $m->getRescatesFiltro($sql,$inicio,$regsPagina)) {
+                        
                         $params["mensajeTabla"]  = "No se han producido resultados en la búsqueda";
                         $params["animales"] = array();
                     }
                     
                     setearNulosTabla($params["animales"]);
-                    return $sql;
+                    $params["totalRegistros"] = $m->getRescatesTotalFiltro($sql);
+                    $params["numPaginas"] = ceil($params["totalRegistros"] / $regsPagina);
+                    $params["pagina"] = $pagina;
+                   
                 }else{
                     $params["mensaje"]= "Error en datos introducidos en el formulario";
+                    
                 }
             }
                         

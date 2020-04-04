@@ -32,10 +32,8 @@ class Model extends PDO
 
     }
 
-    public function getRescates($inicio, $regsPagina,$sql){
-        if($sql!=""){
-            
-        }
+    public function getRescates($inicio, $regsPagina){
+       
         $select = $this->conexion->query("SELECT 
         F.id,
         F.nombre,
@@ -74,7 +72,10 @@ class Model extends PDO
         return $select->rowCount();
     }
 
-    public function getRescatesFiltro($sql){
+    public function getRescatesFiltro($sql,$inicio,$regsPagina){
+
+        $sql.="limit $inicio,$regsPagina";
+
         $select = $this->conexion->query($sql);
 
         $select->execute();
@@ -86,6 +87,14 @@ class Model extends PDO
         }else{
             return false;
         }
+    }
+
+    public function getRescatesTotalFiltro($sql){
+        $select = $this->conexion->query($sql);
+
+        $select->execute();
+
+        return $select->rowCount();
     }
 
     public function getEnfermedades($id){
