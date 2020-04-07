@@ -4,6 +4,7 @@ include('libs/Validacion.php');
 
 class Controller
 {
+  
     
     public function login()
     {
@@ -149,6 +150,7 @@ class Controller
                 //Utilizamos la funcion ceil para redondear el resultado hacia arriba (0.3=1)
                 $params["numPaginas"] = ceil($params["totalRegistros"] / $regsPagina);
                 $params["pagina"] = $pagina;
+                $params["filtro"]='off';
                 
             } else {
                 $params["mensaje"] = "No existen rescates";
@@ -175,11 +177,11 @@ class Controller
         try {
             $pagina = isset($_GET["pagina"]) ? (int)$_GET["pagina"] : 1;
 
-            $regsPagina = 5;
+            $regsPagina = 8;
     
             $inicio = ($pagina>1) ? (($pagina * $regsPagina)- $regsPagina) :0;
             
-            if (isset($_POST["filtrar"])) {
+           
                 $m = new Model();
                 $params = array(
                     'fechaNacDesde' => '',
@@ -204,7 +206,8 @@ class Controller
                     'localidades' => $m->getLocalidades(),
                     'especies' => $m->getEspecies(),
                     'razas' => $m->getRazas(),
-                    'refugios' => $m->getRefugios()
+                    'refugios' => $m->getRefugios(),
+                    'filtro'=>'on'
                 );
                 $sql = "SELECT 
             F.id,
@@ -317,7 +320,7 @@ class Controller
                     $params["selRefugio"] = $_POST["selRefugio"];
                     $sql .= "AND refugio ='" . $_POST["selRefugio"] . "'";
                 }
-
+              
                 $validacion = new Validacion();
                 
                 $regla = array(
@@ -331,25 +334,36 @@ class Controller
                     )
                 );
                 $validaciones = $validacion->rules($regla, $params);
-                
-                if ($validaciones === true) {
 
+                 if(isset($_POST["filtrar"])){
+                    setcookie("consulta", $sql, 0, "/");
+                 }
+                 
+                 if(isset($_GET["pagina"])){
+                    $sql = $_COOKIE["consulta"];
+                 }
+                     
+                                 
+                if ($validaciones === true) {
+                    
                     if (!$params["animales"] = $m->getRescatesFiltro($sql,$inicio,$regsPagina)) {
                         
                         $params["mensajeTabla"]  = "No se han producido resultados en la búsqueda";
                         $params["animales"] = array();
+                       
                     }
                     
                     setearNulosTabla($params["animales"]);
                     $params["totalRegistros"] = $m->getRescatesTotalFiltro($sql);
                     $params["numPaginas"] = ceil($params["totalRegistros"] / $regsPagina);
                     $params["pagina"] = $pagina;
+                    $params["filtro"]="on";
                    
                 }else{
                     $params["mensaje"]= "Error en datos introducidos en el formulario";
                     
                 }
-            }
+            
                         
         }
         catch (Exception $e) {

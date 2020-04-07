@@ -30,7 +30,7 @@ $(function () {
         && validarNombre(nombre)){
             console.log('alsdkfj');
         }else{
-           //event.preventDefault();
+           event.preventDefault();
         }
       
 

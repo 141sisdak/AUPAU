@@ -102,23 +102,52 @@ foreach ($params['animales'] as $animal){
 }
 ?>
 </table>
+
 <!--Mostramos la barra en caso de que hayan resultados-->
 <?php if($params["totalRegistros"]>1):?>
 <nav aria-label="Page navigation">
   <ul class= "pagination">
     <!--Mostramos la barra en caso de que hayan resultados-->
     <li class="<?php if($params["pagina"]==1) echo "page-item disabled";else echo "disabled" ?>">
-      <a class="page-link" href="#" aria-label="Previous">
+    <?php if($params["filtro"]=="off"):?> 
+     <a class="page-link" href="index.php?ctl=rescate&pagina= <?php echo $params["pagina"]-1 ?>" aria-label="Next">
+    <?php else: ?>
+      <a class="page-link" href="index.php?ctl=filtroRescate&pagina= <?php echo $params["pagina"]-1 ?>" aria-label="Next">
+      
+     <?php endif; ?>
         <span aria-hidden="true">Anterior</span>
         <span class="sr-only">Anterior</span>
       </a>
     </li>
     <?php for($i=1; $i<=$params["numPaginas"];$i++): ?>
-    <?php echo '<li class="page-item"><a class="page-link" href="index.php?ctl=rescate&pagina='.  $i . '">'.$i .'</a></li>' ?> 
+    <?php 
+      if($params["filtro"]=="off"){
+       
+        if($params["pagina"]==$i){ 
+         echo '<li class="page-item active"><a class="page-link active" href="index.php?ctl=rescate&pagina='.  $i . '">'.$i .'</a></li>';
+        }else{
+        echo  '<li class="page-item"><a class="page-link active" href="index.php?ctl=rescate&pagina='.  $i . '">'.$i .'</a></li>';
+        }
+       
+      }else{
+        if($params["pagina"]==$i){
+          echo '<li class="page-item active"><a name="filtroPag" class="page-link" href="index.php?ctl=filtroRescate&pagina='.  $i . '">'.$i .'</a></li>';
+        }else{
+          echo '<li class="page-item"><a name="filtroPag" class="page-link" href="index.php?ctl=filtroRescate&pagina='.  $i . '">'.$i .'</a></li>';
+        }
+       
+      }
+      ?> 
 <?php endfor; ?>
 
-    <li class="<?php if($params["pagina"]==$params["totalRegistros"]) echo "page-item disabled";else echo "disabled" ?>">
-      <a class="page-link" href="#" aria-label="Next">
+    <li class="<?php if($params["pagina"]==$params["numPaginas"]) echo "page-item disabled";else echo "disabled" ?>">
+    <?php if($params["filtro"]=="off"):?> 
+     <a class="page-link" href="index.php?ctl=rescate&pagina= <?php echo $params["pagina"]+1 ?>" aria-label="Next">
+    <?php else: ?>
+      <a class="page-link" href="index.php?ctl=filtroRescate&pagina= <?php echo $params["pagina"]+1 ?>" aria-label="Next">
+      
+     <?php endif; ?>
+      
         <span aria-hidden="true">Siguiente</span>
         <span class="sr-only">Siguiente</span>
       </a>
@@ -126,9 +155,9 @@ foreach ($params['animales'] as $animal){
   </ul>
 </nav>
 <?php endif; ?>
-<?php echo $params["totalRegistros"]."<br>" ?>
-<?php echo $params["numPaginas"]."<br>" ?>
-<?php echo $params["pagina"]."<br>" ?>
+<?php echo "Total registros: " . $params["totalRegistros"]."<br>" ?>
+<?php echo "Nº paginas: " . $params["numPaginas"]."<br>" ?>
+<?php echo "Pagina actual: " . (int)$params["pagina"]++ ."<br>" ?>
 <?php 
 if(isset($params["mensajeTabla"])){
   ?>
@@ -212,11 +241,11 @@ if(isset($params["mensajeTabla"])){
 <div>
 <h4>Estado de adopción</h4>
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="radioAdoptado"  value="adoptado" >
+  <input class="form-check-input" type="radio" name="radioAdoptado"  value="adoptado" <?php if(isset($params["estadoAdop"])&&$params["estadoAdop"]=="adoptado") echo "checked" ?> >
   <label class="form-check-label" for="radioAdoptado">Adoptado</label>
   </div>
   <div class="form-check">
-  <input class="form-check-input" type="radio" name="radioAdoptado" value="no adoptado" >
+  <input class="form-check-input" type="radio" name="radioAdoptado" value="no adoptado"<?php if(isset($params["estadoAdop"])&&$params["estadoAdop"]=="no adoptado") echo "checked" ?>>
   <label class="form-check-label" for="radioAdoptado">No adoptado</label>
   </div>
   </div>
