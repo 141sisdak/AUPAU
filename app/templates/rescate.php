@@ -20,6 +20,20 @@ if(isset($validacion->mensaje)){
  
 </ul>
   </div>
+
+  <div class="btn-group">
+  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ordenar por...</button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="<?php if(isset($_POST["filtrar"])||isset($_GET["filtrar"])=="on") echo 'index.php?ctl=filtroRescate&ordenacion=fechaNac&filtrar=on';else echo 'index.php?ctl=rescate&ordenacion=fechaNac'?>">Fecha nacimiento</a>
+    <a class="dropdown-item" href="<?php if(isset($_POST["filtrar"])||isset($_GET["filtrar"])=="on") echo 'index.php?ctl=filtroRescate&ordenacion=fechaIng&filtrar=on';else echo 'index.php?ctl=rescate&ordenacion=fechaIng'?>">Fecha ingreso</a>
+    <a class="dropdown-item" href="<?php if(isset($_POST["filtrar"])||isset($_GET["filtrar"])=="on") echo 'index.php?ctl=filtroRescate&ordenacion=fechaDesp&filtrar=on';else echo 'index.php?ctl=rescate&ordenacion=fechaDesp'?>">Fecha desparasitación</a>
+    <a class="dropdown-item" href="<?php if(isset($_POST["filtrar"])||isset($_GET["filtrar"])=="on") echo 'index.php?ctl=filtroRescate&ordenacion=edad&filtrar=on';else echo 'index.php?ctl=rescate&ordenacion=edad'?>">Edad</a>
+    <a class="dropdown-item" href="<?php if(isset($_POST["filtrar"])||isset($_GET["filtrar"])=="on") echo 'index.php?ctl=filtroRescate&ordenacion=nombre&filtrar=on';else echo 'index.php?ctl=rescate&ordenacion=nombre'?>">Nombre</a>
+    <li class="<?php if($params["pagina"]==1) echo "page-item disabled";else echo "disabled" ?>">
+  </div>
+</div>
+<?php if(isset($_GET["ordenacion"])) echo $_GET["ordenacion"] ."<br>"?>
+<?php if(isset($_POST["filtrar"])) echo "tiene filtrar"; ?>
 </div>
 <div class="table-responsive-md">
 <table class="table">
@@ -62,6 +76,9 @@ foreach ($params['animales'] as $animal){
   <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
   <img src="../web/images/conf.svg" alt="configuracion" class="iconoConf"/>
   </button>
+
+
+
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     
    <a class="dropdown-item" href="index.php?ctl=verAnimal&id=<?php echo $animal['id']?>">Ver ficha</a>
@@ -110,9 +127,9 @@ foreach ($params['animales'] as $animal){
     <!--Mostramos la barra en caso de que hayan resultados-->
     <li class="<?php if($params["pagina"]==1) echo "page-item disabled";else echo "disabled" ?>">
     <?php if($params["filtro"]=="off"):?> 
-     <a class="page-link" href="index.php?ctl=rescate&pagina= <?php echo $params["pagina"]-1 ?>" aria-label="Next">
+     <a class="page-link" href="index.php?ctl=rescate&pagina= <?php echo $params["pagina"]-1 ?> <?php if(isset($_GET["ordenacion"])) echo "&ordenacion=".$_GET["ordenacion"] ?> " aria-label="Next">
     <?php else: ?>
-      <a class="page-link" href="index.php?ctl=filtroRescate&pagina= <?php echo $params["pagina"]-1 ?>" aria-label="Next">
+      <a class="page-link" href="index.php?ctl=filtroRescate&pagina= <?php echo $params["pagina"]-1 ?> <?php if(isset($_GET["ordenacion"])) echo "&ordenacion=".$_GET["ordenacion"]."&filtrar=on" ?>" aria-label="Next">
       
      <?php endif; ?>
         <span aria-hidden="true">Anterior</span>
@@ -124,16 +141,25 @@ foreach ($params['animales'] as $animal){
       if($params["filtro"]=="off"){
        
         if($params["pagina"]==$i){ 
-         echo '<li class="page-item active"><a class="page-link active" href="index.php?ctl=rescate&pagina='.  $i . '">'.$i .'</a></li>';
+         echo '<li class="page-item active"><a class="page-link" href="index.php?ctl=rescate&pagina='.  $i . '">'.$i .'</a></li>';
         }else{
-        echo  '<li class="page-item"><a class="page-link active" href="index.php?ctl=rescate&pagina='.  $i . '">'.$i .'</a></li>';
+          if(isset($_GET["ordenacion"])){
+            echo  '<li class="page-item"><a class="page-link " href="index.php?ctl=rescate&pagina='.  $i ."&ordenacion=".$_GET["ordenacion"]. '">'.$i .'</a></li>';
+          }else{
+            echo  '<li class="page-item"><a class="page-link " href="index.php?ctl=rescate&pagina='.  $i . '">'.$i .'</a></li>';
+          }
+       
         }
        
       }else{
         if($params["pagina"]==$i){
           echo '<li class="page-item active"><a name="filtroPag" class="page-link" href="index.php?ctl=filtroRescate&pagina='.  $i . '">'.$i .'</a></li>';
         }else{
-          echo '<li class="page-item"><a name="filtroPag" class="page-link" href="index.php?ctl=filtroRescate&pagina='.  $i . '">'.$i .'</a></li>';
+          if(isset($_GET["ordenacion"])){
+            echo  '<li class="page-item"><a class="page-link " href="index.php?ctl=filtroRescate&pagina='.  $i ."&ordenacion=".$_GET["ordenacion"]. '&filtrar=on">'.$i .'</a></li>';
+          }else{
+            echo  '<li class="page-item"><a class="page-link " href="index.php?ctl=filtroRescate&pagina='.  $i . '&filtrar=on">'.$i .'</a></li>';
+          }
         }
        
       }
@@ -142,9 +168,9 @@ foreach ($params['animales'] as $animal){
 
     <li class="<?php if($params["pagina"]==$params["numPaginas"]) echo "page-item disabled";else echo "disabled" ?>">
     <?php if($params["filtro"]=="off"):?> 
-     <a class="page-link" href="index.php?ctl=rescate&pagina= <?php echo $params["pagina"]+1 ?>" aria-label="Next">
+      <a class="page-link" href="index.php?ctl=rescate&pagina= <?php echo $params["pagina"]+1 ?> <?php if(isset($_GET["ordenacion"])) echo "&ordenacion=".$_GET["ordenacion"] ?> " aria-label="Next">
     <?php else: ?>
-      <a class="page-link" href="index.php?ctl=filtroRescate&pagina= <?php echo $params["pagina"]+1 ?>" aria-label="Next">
+      <a class="page-link" href="index.php?ctl=filtroRescate&pagina= <?php echo $params["pagina"]+1 ?> <?php if(isset($_GET["ordenacion"])) echo "&ordenacion=".$_GET["ordenacion"]."&filtrar=on" ?>" aria-label="Next">
       
      <?php endif; ?>
       

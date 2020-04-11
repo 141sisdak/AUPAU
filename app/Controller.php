@@ -127,30 +127,52 @@ class Controller
         
         $m = new Model();
 
-        $sql = "";
+        $ordenacion = "";
+        
+
+        if(isset($_GET["ordenacion"])){
+            
+        switch ($_GET["ordenacion"]) {
+            case 'fechaNac':
+                $ordenacion = "  ORDER BY fechaNac";
+                break;
+            case 'fechaIng':
+                $ordenacion = " ORDER BY fechaIngreso";
+                break;
+            case 'fechaDesp':
+                $ordenacion = " ORDER BY ult_despa";
+                break;
+            case 'edad':
+                $ordenacion = " ORDER BY edad";
+                break;
+            case 'nombre':
+                $ordenacion = " ORDER BY nombre";
+                break;
+        
+        }
+       
+    }
+
+        $params = array(
+            'tamanyos' => $m->getTamanyos(),
+            'localidades' => $m->getLocalidades(),
+            'especies' => $m->getEspecies(),
+            'razas' => $m->getRazas(),
+            'refugios' => $m->getRefugios(),
+        );
         
         try {
-
-            
-            
-            if ($m->getRescates($inicio, $regsPagina, $sql)) {
-                $params = array(
-                    'animales' => $m->getRescates($inicio, $regsPagina,$sql),
-                    'tamanyos' => $m->getTamanyos(),
-                    'localidades' => $m->getLocalidades(),
-                    'especies' => $m->getEspecies(),
-                    'razas' => $m->getRazas(),
-                    'refugios' => $m->getRefugios()
-                );
-
-                
+            if($params["animales"] = $m->getRescates($inicio, $regsPagina, $ordenacion)){
 
                 setearNulosTabla($params["animales"]);
-                $params["totalRegistros"] = $m->getRescatesTotal();
-                //Utilizamos la funcion ceil para redondear el resultado hacia arriba (0.3=1)
+
+                $params["totalRegistros"] = $m->getRescatesTotal();                
                 $params["numPaginas"] = ceil($params["totalRegistros"] / $regsPagina);
                 $params["pagina"] = $pagina;
                 $params["filtro"]='off';
+               
+
+              
                 
             } else {
                 $params["mensaje"] = "No existen rescates";
@@ -177,7 +199,7 @@ class Controller
         try {
             $pagina = isset($_GET["pagina"]) ? (int)$_GET["pagina"] : 1;
 
-            $regsPagina = 8;
+            $regsPagina = 3;
     
             $inicio = ($pagina>1) ? (($pagina * $regsPagina)- $regsPagina) :0;
             
@@ -335,23 +357,49 @@ class Controller
                 );
                 $validaciones = $validacion->rules($regla, $params);
 
-                 if(isset($_POST["filtrar"])){
-                    setcookie("consulta", $sql, 0, "/");
-                 }
-                 
-                 if(isset($_GET["pagina"])){
-                    $sql = $_COOKIE["consulta"];
-                 }
-                     
                                  
                 if ($validaciones === true) {
-                    
-                    if (!$params["animales"] = $m->getRescatesFiltro($sql,$inicio,$regsPagina)) {
+
+                  if(isset($_POST["filtrar"])){
+                    setcookie("consulta", $sql, 0, "/");
+                  }
+                      
+                  
+
+                    $ordenacion = "";
+                    if(isset($_GET["ordenacion"])){
+            
+                        switch ($_GET["ordenacion"]) {
+                            case 'fechaNac':
+                                $ordenacion = " ORDER BY fechaNac";
+                                break;
+                            case 'fechaIng':
+                                $ordenacion = " ORDER BY fechaIngreso";
+                                break;
+                            case 'fechaDesp':
+                                $ordenacion = " ORDER BY ult_despa";
+                                break;
+                            case 'edad':
+                                $ordenacion = " ORDER BY edad";
+                                break;
+                            case 'nombre':
+                                $ordenacion = " ORDER BY nombre";
+                                break;
                         
-                        $params["mensajeTabla"]  = "No se han producido resultados en la búsqueda";
-                        $params["animales"] = array();
+                        }
                        
+                        $params["animales"] = $m->getRescatesFiltro($_COOKIE["consulta"],$inicio,$regsPagina,$ordenacion);
+                        error_log($_COOKIE["consulta"]);
+                       
+                    }else{
+                        if (!$params["animales"] = $m->getRescatesFiltro($sql,$inicio,$regsPagina, $ordenacion)) {
+                        
+                            $params["mensajeTabla"]  = "No se han producido resultados en la búsqueda";
+                            $params["animales"] = array();
+                           
+                        }
                     }
+                   
                     
                     setearNulosTabla($params["animales"]);
                     $params["totalRegistros"] = $m->getRescatesTotalFiltro($sql);

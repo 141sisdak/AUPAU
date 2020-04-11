@@ -28,7 +28,7 @@ $(function () {
         && validarParFechas(fechaNacDesde, fechaNacHasta)
         && validarParFechas(fechaUltDesde, fechaUltHasta)
         && validarNombre(nombre)){
-            console.log('alsdkfj');
+           
         }else{
            event.preventDefault();
         }

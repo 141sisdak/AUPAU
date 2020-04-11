@@ -32,33 +32,41 @@ class Model extends PDO
 
     }
 
-    public function getRescates($inicio, $regsPagina){
+    public function getRescates($inicio, $regsPagina, $ordenacion){
+       $query = "SELECT 
+       F.id,
+       F.nombre,
+       F.fechaNac,
+       F.edad,
+       F.fechaIngreso,
+       F.estadoAdop,
+       F.esterilizado,
+       F.numchip,
+       F.ult_despa,
+       E.nombre as especie,        
+       T.tamanyo,
+       RA.nombre as raza,
+       L.localidad,
+       R.nombre as refugio
+       FROM 
+       ficha_animal F 
+       INNER JOIN especie E ON F.especie = E.id 
+       INNER JOIN tamanyos T ON F.tamanyo = T.id
+       INNER JOIN localidades L ON  F.localidad = L.id
+       INNER JOIN refugios R ON F.refugio = R.id
+       INNER JOIN raza RA ON F.especie = RA.id
+       WHERE activo = 1";
        
-        $select = $this->conexion->query("SELECT 
-        F.id,
-        F.nombre,
-        F.fechaNac,
-        F.edad,
-        F.fechaIngreso,
-        F.estadoAdop,
-        F.esterilizado,
-        F.numchip,
-        F.ult_despa,
-        E.nombre as especie,        
-        T.tamanyo,
-        RA.nombre as raza,
-        L.localidad,
-        R.nombre as refugio
-        FROM 
-        ficha_animal F 
-        INNER JOIN especie E ON F.especie = E.id 
-        INNER JOIN tamanyos T ON F.tamanyo = T.id
-        INNER JOIN localidades L ON  F.localidad = L.id
-        INNER JOIN refugios R ON F.refugio = R.id
-        INNER JOIN raza RA ON F.especie = RA.id
-        WHERE activo = 1
-        LIMIT $inicio, $regsPagina"
-    );
+
+        if($ordenacion!=""){
+
+            $query.=$ordenacion;
+            
+        }
+
+        $query.=" LIMIT $inicio, $regsPagina";
+        
+        $select = $this->conexion->query($query);
         return $select->fetchAll();
         
 
@@ -72,9 +80,13 @@ class Model extends PDO
         return $select->rowCount();
     }
 
-    public function getRescatesFiltro($sql,$inicio,$regsPagina){
+    public function getRescatesFiltro($sql,$inicio,$regsPagina, $ordenacion){
 
-        $sql.="limit $inicio,$regsPagina";
+       
+if($ordenacion !=""){
+    $sql.=$ordenacion;
+}
+        $sql.=" limit $inicio,$regsPagina";
 
         $select = $this->conexion->query($sql);
 
@@ -90,6 +102,9 @@ class Model extends PDO
     }
 
     public function getRescatesTotalFiltro($sql){
+        if(isset($_GET["filtrar"])=='on'){
+            $sql = $_COOKIE["consulta"];
+        }
         $select = $this->conexion->query($sql);
 
         $select->execute();
