@@ -13,6 +13,151 @@ if(isset($validacion->mensaje)){
     
 }
 ?>
+<?php if(isset($_GET["mensaje"])) :?>
+  <b><span style="color: green;"><?php echo $_GET['mensaje'] ?></span></b>
+<?php endif; ?>
+<!--***************************************************************************************************************-->
+<!--***************************************************************************************************************-->
+<!--***************************************************************************************************************-->
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Nuevo</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo rescate</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="formNuevoRescate" action="index.php?ctl=nuevoRescate" method="post" id="formNuevoRescate">
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Nombre:</label>
+            <input type="text" class="form-control" id="nNombre" name="nNombre">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Fecha nacimiento:</label>
+            <input type="date" class="form-control" id="nFechaNac" name="nFechaNac">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Fecha ingreso:</label>
+            <input type="date" class="form-control" id="nFechaIng" name="nFechaIng">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Ult. desp:</label>
+            <input type="date" class="form-control" id="nUlt_desp" name="nUlt_desp">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Edad:</label>
+            <input type="number" class="form-control" id="nEdad" name="nEdad">
+          </div>
+         
+          <div class="form-check">
+            <h4 class="col-form-label">Esterilizado</h4>
+            <input type="checkbox" class="form-check-input" id="nCkEsterilizado" name="nCkEsterilizado">
+            <br>
+          </div>
+          <div class="form-check">
+            <h4 class="col-form-label">Adoptado</h4>
+            <input type="checkbox" class="form-check-input" id="nChAdoptado" name="nChAdoptado">
+            <br>
+          </div>
+         
+          <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Localidad:</label>
+          <select name="nSelLocalidad" id="nSelLocalidad">
+            <option disabled selected value="0">Selecciona una localidad</option>
+            <?php foreach($params["localidades"] as $localidad){?>
+
+            <option value="<?php echo $localidad["id"] ?>"><?php echo $localidad["localidad"] ?></option>
+            <?php } ?>
+          </select>
+          </div> 
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Nº Chip:</label>
+            <input type="text" class="form-control" id="nNumChip" name="nNumchip">
+          </div>
+          <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Refugio:</label>
+          <select name="nSelRefugio" id="nSelRefugio" >
+            <option disabled selected value="0">Selecciona un refugio</option>
+            <?php foreach($params["refugios"] as $refugio){?>
+
+            <option value="<?php echo $refugio["id"] ?>"><?php echo $refugio["nombre"] ?></option>
+
+            <?php
+            } 
+            ?>
+            </select>
+          </div>
+          <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Tamaño:</label>
+          <select name="nSelTamanyo" id="nSelTamanyo">
+            <option disabled selected value="0">Selecciona un tamaño</option>
+            <?php foreach($params["tamanyos"] as $tamanyos=>$campo){?>
+
+            <option value="<?php echo $campo["id"] ?>"><?php echo $campo["tamanyo"] ?></option>
+
+<?php
+} 
+?>
+        </select>
+        </div>
+
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Sexo:</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="nRadioSexo" value="macho">
+                <label class="form-check-label" for="exampleRadios1">Macho</label>
+                </div>
+                <div class="form-check">
+                <input class="form-check-input" type="radio" name="nRadioSexo" value="hembra" >
+                <label class="form-check-label" for="exampleRadios1">Hembra</label>
+                </div>
+            </div>
+            <div class="form-group">
+              <label for="lblEspecie" class="col-form-label">Especie</label>
+              <select name="nSelEspecie" id="nSelEspecie">
+              <option disabled selected value="0">Selecciona una especie</option>
+              <?php foreach($params["especies"] as $especies){?>
+
+              <option value="<?php echo $especies["id"] ?>"><?php echo $especies["nombre"] ?></option>
+
+              <?php
+              } 
+              ?>
+              </select>
+              </div>
+
+            <div class="form-group">
+              <label for="lblRaza" class="col-form-label">Raza</label>
+              <select name="nSelRaza" id="nSelRaza" disabled>
+              <option disabled selected value="0">Selecciona una raza</option>
+              </select>
+              </div>
+
+            <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Comentarios:</label>
+            <textarea class="form-control" id="nComentarios" name="nComentarios"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Descripción:</label>
+            <textarea class="form-control" id="nDescripcion" name="nDescripcion"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" type="submit" name="enviarNuevo" id="aceptar">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--***************************************************************************************************************-->
+<!--***************************************************************************************************************-->
+<!--***************************************************************************************************************-->
  <div class="button-group">
         <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <span class="caret">Personalizar campos</span></button>
 <ul class="dropdown-menu" id="listaCampos">
@@ -229,9 +374,9 @@ if(isset($params["mensajeTabla"])){
 
 <select name="selLocalidad" id="selLocalidad">
 <option disabled selected value="0">Selecciona una localidad</option>
-<?php foreach($params["localidades"] as $tamanyos){?>
+<?php foreach($params["localidades"] as $localidad){?>
 
-<option value="<?php echo $tamanyos["id"] ?>"><?php echo $tamanyos["localidad"] ?></option>
+<option value="<?php echo $localidad["id"] ?>"><?php echo $localidad["localidad"] ?></option>
 
 <?php
 } 

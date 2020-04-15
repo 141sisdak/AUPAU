@@ -192,6 +192,16 @@ class Validacion
         }
     }
 
+    protected function _fechaSuperior($campo, $valor){
+       
+        $actual = time();
+        if(!strtotime($valor)>($actual)){
+            return true;
+        }else{
+            $this->mensaje[$campo][] ="La fecha no puede ser superior a la actual";
+            return false;
+        }
+    }
     
     
     /**
@@ -207,6 +217,15 @@ class Validacion
         } else {
             $this->mensaje[$campo][] = "el campo $campo no está en el formato adecuado";
             return false;
+        }
+    }
+
+    protected function _chip($campo, $valor){
+        if(substr($valor,0,3)!="941" || strlen($valor)==0){
+            $this->mensaje[$campo][] = "Error en el nº de chip";
+            return false;
+        }else{
+            return true;
         }
     }
 }

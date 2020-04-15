@@ -9,3 +9,8 @@ tr{
 .iconoConf{
     height: 30px;
 }
+
+.errorValidacionForm{
+    color: red;
+    font-weight: bold;
+}

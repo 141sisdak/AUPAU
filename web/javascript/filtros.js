@@ -1,5 +1,5 @@
 $(function () {
-
+    
     $("#formFiltros").submit(function (event) {
 
 
@@ -32,11 +32,6 @@ $(function () {
         }else{
            event.preventDefault();
         }
-      
-
-     
-
-
     });
     
 function validarNombre(nombre){
@@ -70,21 +65,21 @@ function validarParFechas(fechaDesde,fechaHasta) {
    var hasta = fechaHasta.val();
     if(desde=="" && hasta!=""){
         fechaDesde.css("border", "2px solid red");
-        mostrarError($(fechaDesde), "rango");
+        mostrarErrorFechas($(fechaDesde), "rango");
         
         ok = false;
     }else if(desde!="" && hasta==""){
         fechaHasta.css("border", "2px solid red");              
-        mostrarError($(fechaHasta), "rango");
+        mostrarErrorFechas($(fechaHasta), "rango");
         ok = false;
     }else if(Date.parse(hasta)>fechaActual){
         fechaHasta.css("border", "2px solid red");
-        mostrarError($(fechaHasta), "superior");        
+        mostrarErrorFechas($(fechaHasta), "superior");        
         ok = false;
     }else if(Date.parse(desde)>Date.parse(hasta)){
         $(fechaDesde).css("border", "2px solid red");
         $(fechaHasta).css("border", "2px solid red");
-        mostrarError($(fechaHasta), "alreves");      
+        mostrarErrorFechas($(fechaHasta), "alreves");      
         
         ok = false;
     }
@@ -94,7 +89,7 @@ function validarParFechas(fechaDesde,fechaHasta) {
   }
 /*Muestra el texto de error según el objeto pasado y el tipo de error a mostrar
 Accedemos al padre (un div) y lo añadimos al final*/
-  function mostrarError(fecha, error){
+  function mostrarErrorFechas(fecha, error){
     switch (error) {
     case "rango":
       fecha.parent().append(
@@ -123,7 +118,7 @@ Accedemos al padre (un div) y lo añadimos al final*/
     break;
 };
   }
-    
+ 
 //Cuando seleccionemos una especie rellenaremos el select de las razas
 //Previamente se vacia
 $("#selEspecie").change(function(){

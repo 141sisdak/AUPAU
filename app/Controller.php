@@ -167,7 +167,7 @@ class Controller
                 setearNulosTabla($params["animales"]);
 
                 $params["totalRegistros"] = $m->getRescatesTotal();                
-                $params["numPaginas"] = ceil($params["totalRegistros"] / $regsPagina);
+                $params["numPaginas"] = round($params["totalRegistros"] / $regsPagina);
                 $params["pagina"] = $pagina;
                 $params["filtro"]='off';
                
@@ -426,5 +426,83 @@ class Controller
         
         require __DIR__ . "/templates/rescate.php";
         
+    }
+    public function nuevoRescate(){
+
+        if(isset($_POST["nSelEspecie"])){
+            $datos["nombre"]  = recoge("nNombre");
+            $datos["fechaNac"] = $_POST["nFechaNac"];
+            $datos["fechaIng"] = $_POST["nFechaIng"];
+            $datos["fechaDesp"] = $_POST["nUlt_desp"];
+            $datos["edad"] = recoge("nEdad");
+            $datos["localidad"] = isset($_POST["nSelLocalidad"]) ? $_POST["nSelLocalidad"] : null; 
+            $datos["esterilizado"] = isset($_POST["nCkEsterilizado"]) ? "si" : null; 
+            $datos["estadoAdop"] = isset($_POST["nChAdoptado"]) ? $_POST["nChAdoptado"] : null;
+            $datos["numChip"] = recoge("nNumchip");
+            $datos["refugio"] = isset($_POST["nSelRefugio"]) ? $_POST["nSelRefugio"] : null;
+            $datos["tamanyo"] = isset($_POST["nSelTamanyo"]) ? $_POST["nSelTamanyo"] : null;
+            $datos["sexo"] = isset($_POST["nRadioSexo"]) ? $_POST["nRadioSexo"] : null;
+            $datos["especie"] = $_POST["nSelEspecie"];
+            $datos["raza"] = isset($_POST["nSelRaza"]) ? $_POST["nSelRaza"] : null;
+            $datos["descripcion"] = recoge("nDescripcion");
+            $datos["comentarios"] = recoge("nComentarios");
+
+            foreach($datos as &$dato){
+                if($dato==""){
+                    $dato =null;
+                }
+            }
+            
+            $validacionNuevoRescate = new Validacion();
+            
+            $regla = array(
+                array(
+                    'name' => 'nombre',
+                    'regla' => 'letras'
+                ),
+                array(
+                    'name' => 'edad',
+                    'regla' => 'numeric'
+                ),
+                array(
+                    'name' => 'numChip',
+                    'regla' => 'numeric,chip'
+                )
+            );
+            
+            $validaciones = $validacionNuevoRescate->rules($regla, $datos);
+                    
+                    if ($validaciones === true) {
+                        $m = new Model();
+                        
+                        $id = $m->obtenerUltimoIdRescate($datos["especie"]);
+                        $UltId = (int)substr($id["id"],2);
+                        $UltId++;
+                        switch ($datos["especie"]) {
+                           
+                            case '1':
+                                $id="P-".$UltId;
+                                break;
+                            case '2':
+                                $id="G-".$UltId;
+                                break;
+                            case '3':
+                                $id="R-".$UltId;
+                                break;
+                        }
+                        $datos["id"]= $id;
+                        $m->insertarRescate($datos);
+                        header("Location:index.php?ctl=rescate&mensaje=Exito en la insercion");
+                    }
+
+        }else{
+            header("Location:index.php?ctl=rescate&mensaje=Error en la insercion");
+        }
+
+       
+      
+
+                
+
     }
 }

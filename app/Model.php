@@ -257,8 +257,44 @@ if($ordenacion !=""){
     return $select->fetchAll(PDO::FETCH_ASSOC);
    }
 
+   public function insertarRescate($datos){
+       $insert= $this->conexion->prepare("INSERT INTO ficha_animal 
+       (id, comentarios, descripcion, edad, especie, estadoAdop, fechaIngreso, fechaNac, ult_despa, esterilizado, nombre, numchip, raza, refugio, tamanyo, sexo, activo) 
+       VALUES (:id,:comentarios,:descripcion,:edad,:especie,:estadoAdop,:fechaIngreso,:fechaNac,:ult_despa,:esterilizado,:nombre,:numchip,:raza,:refugio,:tamanyo,:sexo,:activo )");
 
+       $insert->bindValue(":id",$datos["id"]);
+       $insert->bindValue(":comentarios",$datos["comentarios"]);
+       $insert->bindValue(":descripcion",$datos["descripcion"]);
+       $insert->bindValue(":edad",$datos["edad"]);
+       $insert->bindValue(":especie",$datos["especie"]);
+       $insert->bindValue(":estadoAdop",$datos["estadoAdop"]);
+       $insert->bindValue(":fechaIngreso",$datos["fechaIng"]);
+       $insert->bindValue(":fechaNac",$datos["fechaNac"]);
+       $insert->bindValue(":ult_despa",$datos["fechaDesp"]);
+       $insert->bindValue(":esterilizado",$datos["esterilizado"]);
+       $insert->bindValue(":nombre",$datos["nombre"]);
+       $insert->bindValue(":numchip",$datos["numChip"]);
+       $insert->bindValue(":raza",$datos["raza"]);
+       $insert->bindValue(":refugio",$datos["refugio"]);
+       $insert->bindValue(":tamanyo",$datos["tamanyo"]);
+       $insert->bindValue(":sexo",$datos["sexo"]);
+       $insert->bindValue(":activo","1");
+        
+
+       $insert->execute();
+   }
+
+   function obtenerUltimoIdRescate($especie){
+        $select = $this->conexion->query("SELECT id
+         FROM ficha_animal 
+         WHERE especie = $especie 
+         ORDER BY SUBSTRING(id, 1, 2), CAST(SUBSTRING(id, 3, LENGTH(id)) AS UNSIGNED) DESC 
+         LIMIT 1");
+        $select->execute();
+        return $select->fetch(PDO::FETCH_ASSOC);
+   }
     
    
 }
 ?>
+  

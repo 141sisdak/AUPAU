@@ -66,6 +66,11 @@ $map = array(
         'controller'=>'Controller',
         'action'=>'filtroRescate',
         'nivel'=> 1
+    ),
+    'nuevoRescate'=>array(
+        'controller'=>'Controller',
+        'action'=>'nuevoRescate',
+        'nivel'=> 1
     )
     
     

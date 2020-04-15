@@ -8,9 +8,10 @@
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.Config::$mvc_vis_css_reset ?>" />
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="../web/javascript/filtros.js"></script>
 <script src="../web/javascript/validaciones.js"></script>
 <script src="../web/javascript/ajax_rescate.js"></script>
-<script src="../web/javascript/filtros.js"></script>
+
 
 
 
