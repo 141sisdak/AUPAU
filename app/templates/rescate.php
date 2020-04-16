@@ -52,6 +52,39 @@ if(isset($validacion->mensaje)){
             <label for="recipient-name" class="col-form-label">Edad:</label>
             <input type="number" class="form-control" id="nEdad" name="nEdad">
           </div>
+
+          <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Enfermedades:</label>
+          <select name="nSelEnfermedades[]" id="nSelEnferemedades" multiple>
+            <option disabled selected value="0">Selecciona enfermedad/es</option>
+            <?php foreach($params["enfermedades"] as $enfermedad){?>
+
+            <option value="<?php echo $enfermedad["id"] ?>"><?php echo $enfermedad["enfermedad"] ?></option>
+            <?php } ?>
+          </select>
+          </div> 
+
+          <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Vacunas:</label>
+          <select name="nSelVacunas[]" id="nSelVacunas" multiple>
+            <option disabled selected value="0">Selecciona vacuna/s</option>
+            <?php foreach($params["vacunas"] as $vacuna){?>
+
+            <option value="<?php echo $vacuna["id"] ?>"><?php echo $vacuna["nombre"] ?></option>
+            <?php } ?>
+          </select>
+          </div> 
+
+          <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Tratamientos:</label>
+          <select name="nSelTratamientos[]" id="nSelTratamientos" multiple>
+            <option disabled selected value="0">Selecciona tratamiento/s</option>
+            <?php foreach($params["tratamientos"] as $tratamiento){?>
+
+            <option value="<?php echo $tratamiento["id"] ?>"><?php echo $tratamiento["tratamiento"] ?></option>
+            <?php } ?>
+          </select>
+          </div> 
          
           <div class="form-check">
             <h4 class="col-form-label">Esterilizado</h4>

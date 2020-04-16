@@ -71,7 +71,13 @@ $map = array(
         'controller'=>'Controller',
         'action'=>'nuevoRescate',
         'nivel'=> 1
+    ),
+    'modificarAnimal'=>array(
+        'controller'=>'Controller',
+        'action'=>'modificarAnimal',
+        'nivel'=> 1
     )
+    
     
     
 );

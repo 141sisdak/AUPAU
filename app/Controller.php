@@ -4,7 +4,10 @@ include('libs/Validacion.php');
 
 class Controller
 {
-  
+    public function inicio()
+    {
+        require __DIR__ . "/templates/inicio.php";
+    }
     
     public function login()
     {
@@ -83,15 +86,15 @@ class Controller
                 
                 $params["ficha"] = setearNulos($m->getAnimal($_GET["id"]));
                 
-                if (!$params["enfermedades"] = $m->getEnfermedades($_GET["id"])) {
+                if (!$params["enfermedades"] = $m->getEnfermedadesPorId($_GET["id"])) {
                     $params["enfermedades"][0]["tipo"] = "Sin datos";
                 }
                 
-                if (!$params["tratamientos"] = $m->getTratamientos($_GET["id"])) {
+                if (!$params["tratamientos"] = $m->getTratamientosPorId($_GET["id"])) {
                     $params["tratamientos"][0]["tipo"] = "Sin datos";
                 }
                 
-                if (!$params["vacunas"] = $m->getVacunas($_GET["id"])) {
+                if (!$params["vacunas"] = $m->getVacunasPorId($_GET["id"])) {
                     $params["vacunas"][0]["tipo"] = "Sin datos";
                 }
                 
@@ -110,10 +113,7 @@ class Controller
         }
     }
     
-    public function inicio()
-    {
-        require __DIR__ . "/templates/inicio.php";
-    }
+   
     
     public function rescate()
     {
@@ -159,6 +159,9 @@ class Controller
             'especies' => $m->getEspecies(),
             'razas' => $m->getRazas(),
             'refugios' => $m->getRefugios(),
+            'tratamientos'=> $m->getTratamientos(),
+            'vacunas'=>$m->getVacunas(),
+            'enfermedades' => $m->getEnfermedades()
         );
         
         try {
@@ -430,6 +433,9 @@ class Controller
     public function nuevoRescate(){
 
         if(isset($_POST["nSelEspecie"])){
+
+            $m = new Model();
+
             $datos["nombre"]  = recoge("nNombre");
             $datos["fechaNac"] = $_POST["nFechaNac"];
             $datos["fechaIng"] = $_POST["nFechaIng"];
@@ -447,11 +453,13 @@ class Controller
             $datos["descripcion"] = recoge("nDescripcion");
             $datos["comentarios"] = recoge("nComentarios");
 
+
             foreach($datos as &$dato){
                 if($dato==""){
                     $dato =null;
                 }
             }
+
             
             $validacionNuevoRescate = new Validacion();
             
@@ -473,7 +481,7 @@ class Controller
             $validaciones = $validacionNuevoRescate->rules($regla, $datos);
                     
                     if ($validaciones === true) {
-                        $m = new Model();
+                       
                         
                         $id = $m->obtenerUltimoIdRescate($datos["especie"]);
                         $UltId = (int)substr($id["id"],2);
@@ -491,18 +499,81 @@ class Controller
                                 break;
                         }
                         $datos["id"]= $id;
+                        
+                        if(isset($_POST["nSelEnfermedades"])){
+                            $enfermedades = array();
+                            foreach($_POST["nSelEnfermedades"] as $enfermedad){
+                             array_push($enfermedades, $enfermedad);
+                            }
+                            $m->insertarEnfermedadesAnimal($datos["id"], $enfermedades);
+                        }
+                        if(isset($_POST["nSelVacunas"])){
+                         $vacunas = array();
+                         foreach($_POST["nSelVacunas"] as $vacuna){
+                          array_push($vacunas, $vacuna);
+                         }
+                         $m->insertarVacunasAnimal($datos["id"], $vacunas);
+                     }
+             
+                     if(isset($_POST["nSelTratamientos"])){
+                         $tratamientos = array();
+                         foreach($_POST["nSelTratamientos"] as $tratamiento){
+                          array_push($tratamientos, $tratamiento);
+                         }
+                         $m->insertarTratamientosAnimal($datos["id"], $tratamientos);
+                     }
                         $m->insertarRescate($datos);
+
+                       
+
                         header("Location:index.php?ctl=rescate&mensaje=Exito en la insercion");
                     }
 
         }else{
             header("Location:index.php?ctl=rescate&mensaje=Error en la insercion");
         }
+    }
 
-       
-      
-
+    public function modificarRescate(){
+        if (isset($_GET["id"])) {
+            
+            $params = array(
+                'ficha' => array(),
+                'enfermedades' => array(),
+                'vacunas' => array(),
+                'tratamientos' => array()
+            );
+            
+            try {
                 
-
+                $m = new Model();
+                
+                $params["ficha"] = setearNulos($m->getAnimal($_GET["id"]));
+                
+                if (!$params["enfermedades"] = $m->getEnfermedadesPorId($_GET["id"])) {
+                    $params["enfermedades"][0]["tipo"] = "Sin datos";
+                }
+                
+                if (!$params["tratamientos"] = $m->getTratamientosPorId($_GET["id"])) {
+                    $params["tratamientos"][0]["tipo"] = "Sin datos";
+                }
+                
+                if (!$params["vacunas"] = $m->getVacunasPorId($_GET["id"])) {
+                    $params["vacunas"][0]["tipo"] = "Sin datos";
+                }
+                
+            }
+            catch (Exception $e) {
+                error_log("Excepcion producida el " . date("d-m-YY") . " a las " . date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
+                //header('Location: index.php?ctl=error');
+            }
+            catch (Error $e) {
+                error_log("Error producido el " . date("d-m-YY") . " a las " . date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
+            //header('Location: index.php?ctl=error');
+            }
+            
+            require __DIR__ . "/templates/fichaAnimal.php";
+            
+        }
     }
 }

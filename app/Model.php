@@ -112,7 +112,7 @@ if($ordenacion !=""){
         return $select->rowCount();
     }
 
-    public function getEnfermedades($id){
+    public function getEnfermedadesPorId($id){
         $select = $this->conexion->query("SELECT E.enfermedad as tipo
         FROM enfermedades_animal A INNER JOIN enfermedades E 
         ON A.id_enfermedad = E.id 
@@ -131,7 +131,7 @@ if($ordenacion !=""){
        
     }
 
-    public function getVacunas($id){
+    public function getVacunasPorId($id){
         $select = $this->conexion->query("SELECT V.nombre AS tipo 
         FROM vacunas_animal A 
         INNER JOIN vacunas V 
@@ -149,7 +149,7 @@ if($ordenacion !=""){
         }
     }
 
-    public function getTratamientos($id){
+    public function getTratamientosPorId($id){
         $select = $this->conexion->query("SELECT T.tratamiento AS tipo
         FROM tratamientos_animal A
         INNER JOIN tratamientos T
@@ -293,6 +293,47 @@ if($ordenacion !=""){
         $select->execute();
         return $select->fetch(PDO::FETCH_ASSOC);
    }
+
+   function getEnfermedades(){
+       $select = $this->conexion->query("SELECT * FROM enfermedades");
+       $select->execute();
+       return $select->fetchAll(PDO::FETCH_ASSOC);
+
+   }
+
+   function getTratamientos(){
+    $select = $this->conexion->query("SELECT * FROM tratamientos");
+    $select->execute();
+    return $select->fetchAll(PDO::FETCH_ASSOC);
+
+}
+
+    function getVacunas(){
+        $select = $this->conexion->query("SELECT * FROM vacunas");
+    $select->execute();
+    return $select->fetchAll(PDO::FETCH_ASSOC);
+    }
+   
+    function insertarEnfermedadesAnimal($id, $enfermedades){
+                
+        foreach($enfermedades as $enfermedad){
+            $insert = $this->conexion->query("INSERT INTO enfermedades_animal (id_animal, id_enfermedad) VALUES ('$id','$enfermedad')");
+        }
+    }
+    function insertarVacunasAnimal($id, $vacunas){
+        foreach($vacunas as $vacuna){
+            $insert = $this->conexion->query("INSERT INTO enfermedades_animal (id_animal, id_enfermedad) VALUES ('$id','$vacuna')");
+            
+        }
+    }
+    function insertarTratamientosAnimal($id, $tratamientos){
+                
+        foreach($tratamientos as $tramiento){
+            $insert = $this->conexion->query("INSERT INTO enfermedades_animal (id_animal, id_enfermedad) VALUES ('$id','$tramiento')");
+        }
+
+        
+    }
     
    
 }
