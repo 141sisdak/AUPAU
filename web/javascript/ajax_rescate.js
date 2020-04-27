@@ -122,11 +122,159 @@ $(".peticion").click(function(event){
         )
        );
    }
-
-   
-  
 });
 
+//Modificacion de enfermedades, vacunas y tratamientos (modRescate.php)
+$(".envatra input").change(function(){
+  if($(this).parent().parent().find("input").is(":checked")){
+     
+      $(this).parent().parent().find("button:first").prop("disabled", false);
+  }else{
+    $(this).parent().parent().find("button:first").prop("disabled", true);
+  }
+});
+
+$(".envatra button").click(function(){
+  var id = $('#id_rescate').text();
+  
+  var checked = new Array();
+   $(this).parent().find("input:checkbox:checked").each(function(){
+        checked.push($(this).val());
+   });
+   var envatra =$(this).parent().find("h4").text(); 
+   
+   
+   
+   $.ajax({
+       type: "post",
+       url: "../app/peticionesAjax.php",
+       dataType:'text',
+       data: {'checked': JSON.stringify(checked),id_resc:id, envatra_tipo:envatra},
+       success: function (response) {
+           location.reload();
+       }
+   })
+    
+});
+
+$('#enfermedadesModal,#vacunasModal, #tratamientosModal').on('shown.bs.modal', function() {
+    
+  //Obtener todas las enfermedades de la ESPECIE
+  var especie = $('#enfermedadesModal').attr("aria-labelledby");
+  var envatra = $(this);
+  var peticion = "";
+  var tipo = "";
+
+//Eliminamos el select anterior para que no lo vuelva a cargar
+ $(this).find("select").remove();
+
+  switch ($(this).attr("id")) {
+  case "enfermedadesModal":
+  peticion = "enfermedades";
+  tipo = "enfermedad";
+  break;
+  case "vacunasModal":
+  peticion = "vacunas";
+  tipo = "nombre"
+  
+  break;
+  case "tratamientosModal":
+  peticion = "tratamientos";
+  tipo = "tratamiento"
+  break;
+  }
+
+  envatras = new Array();
+  var id_animal = $("#id_rescate").text();
+  //Hacemos una petición ajax para obtener las enfermedades del animal
+  $.getJSON("../app/peticionesAjax.php",{idAnimal:id_animal, tipoPeticion:peticion})
+   
+   .done(function(datos){
+   
+    if(datos.length>0){
+       for (var i = 0; i<datos.length;i++){
+            envatras.push(datos[i].id);
+       }
+    }
+    
+   })
+   .fail(function( jqXHR, textStatus, errorThrown ) {
+    if ( console && console.log ) {
+        console.log( "La solicitud a fallado: " +  errorThrown);
+        console.warn(jqXHR.responseText);
+    }
+   });
+
+//Hacemos una peticion ajax para obtener todas las enfermedades
+  $.ajax({
+    type: "get",
+    url: "../app/peticionesAjax.php",
+    dataType:'json',
+    data: {getEnvatra:peticion},
+    success: function (response) {
+      var respuesta = response;
+     
+        //Eliminamos las enfermedades que ya tiene el animal para que el usuario no las pueda volver a seleccionar
+        for(var i = 0; i<respuesta.length;i++){
+            if($.inArray(respuesta[i]["id"],envatras)!=-1){
+                respuesta.splice(i,1);
+                i--;
+              
+            }
+           
+        }
+        
+      //Añadimos el select con las options correspondientes 
+      $(envatra).find(".modal-body").prepend(
+        
+          $("<select>",{
+            'name':'asignarEnvatras[]',            
+          }).attr("multiple", "multiple")
+      );
+      for(let i = 0; i<response.length;i++){
+        $("select").append(
+            $("<option>",{
+                'value':response[i]["id"],
+                'text':response[i][tipo]
+            })
+        )
+      } 
+    }
+}).fail(function( jqXHR, textStatus, errorThrown ) {
+    if ( console && console.log ) {
+        console.log( "La solicitud a fallado: " +  errorThrown);
+        console.warn(jqXHR.responseText);
+    }
+   });
+
+  });
+$('.btnAceptar').click(function(){
+    var id = $('#id_rescate').text();
+    var opcionesSelec = $(this).parent().parent().find("select").val();
+    var envatra = $(this).attr("id");
+    console.log(opcionesSelec);
+    console.log(id);
+    console.log(envatra);
+
+    $.ajax({
+        type: "post",
+        url: "../app/peticionesAjax.php",
+        dataType:'text',
+        data: {ins_envatra:envatra, idRescate:id, select:JSON.stringify(opcionesSelec)},
+        success: function (response) {
+            location.reload();
+        }
+    }).fail(function( jqXHR, textStatus, errorThrown ) {
+        if ( console && console.log ) {
+            console.log( "La solicitud a fallado: " +  errorThrown);
+            console.warn(jqXHR.responseText);
+        }
+       });
+
+  
+
+
+});
 
    
 });

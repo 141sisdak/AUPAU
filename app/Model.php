@@ -113,7 +113,7 @@ if($ordenacion !=""){
     }
 
     public function getEnfermedadesPorId($id){
-        $select = $this->conexion->query("SELECT E.enfermedad as tipo
+        $select = $this->conexion->query("SELECT E.enfermedad as tipo, E.id
         FROM enfermedades_animal A INNER JOIN enfermedades E 
         ON A.id_enfermedad = E.id 
         WHERE A.id_animal='".$id."'");
@@ -132,7 +132,7 @@ if($ordenacion !=""){
     }
 
     public function getVacunasPorId($id){
-        $select = $this->conexion->query("SELECT V.nombre AS tipo 
+        $select = $this->conexion->query("SELECT V.nombre AS tipo, V.id
         FROM vacunas_animal A 
         INNER JOIN vacunas V 
         ON A.id_vacuna = V.id WHERE 
@@ -150,7 +150,7 @@ if($ordenacion !=""){
     }
 
     public function getTratamientosPorId($id){
-        $select = $this->conexion->query("SELECT T.tratamiento AS tipo
+        $select = $this->conexion->query("SELECT T.tratamiento AS tipo, T.id
         FROM tratamientos_animal A
         INNER JOIN tratamientos T
         ON A.id_tratamiento = T.id
@@ -240,6 +240,20 @@ if($ordenacion !=""){
 
    public function getRazasPorEspecie($idEspecie){
 
+    switch ($idEspecie) {
+        case 'perro':
+            $idEspecie = "1";
+            break;
+        
+        case 'gato':
+            $idEspecie = "2";
+            break;
+
+        case 'roedor':
+            $idEspecie = "3";
+            break;
+    }
+
     $select = $this->conexion->query("SELECT * FROM raza WHERE especie = $idEspecie AND id <> 1 order by nombre");
 
     $select->execute();
@@ -320,20 +334,95 @@ if($ordenacion !=""){
             $insert = $this->conexion->query("INSERT INTO enfermedades_animal (id_animal, id_enfermedad) VALUES ('$id','$enfermedad')");
         }
     }
+    
     function insertarVacunasAnimal($id, $vacunas){
         foreach($vacunas as $vacuna){
-            $insert = $this->conexion->query("INSERT INTO enfermedades_animal (id_animal, id_enfermedad) VALUES ('$id','$vacuna')");
+            $insert = $this->conexion->query("INSERT INTO vacunas_animal (id_animal, id_vacuna) VALUES ('$id','$vacuna')");
             
         }
     }
     function insertarTratamientosAnimal($id, $tratamientos){
                 
         foreach($tratamientos as $tramiento){
-            $insert = $this->conexion->query("INSERT INTO enfermedades_animal (id_animal, id_enfermedad) VALUES ('$id','$tramiento')");
+            $insert = $this->conexion->query("INSERT INTO tratamientos_animal (id_animal, id_tratamiento) VALUES ('$id','$tramiento')");
         }
-
         
     }
+
+    function eliminarEnvatra($id, $envatras, $tipo){
+        foreach($envatras as $envatra){
+            $sql = "DELETE FROM";
+            switch ($tipo) {
+                case 'Enfermedades':
+                    $sql .=" enfermedades_animal WHERE id_animal = '$id' AND id_enfermedad = $envatra";
+                    break;
+                
+                case 'Vacunas':
+                    $sql .=" vacunas_animal WHERE id_animal = '$id' AND id_vacuna = $envatra";
+                    break;
+
+                case 'Tratamientos':
+                    $sql .=" tratamientos_animal WHERE id_animal = '$id' AND id_tratamiento = $envatra";
+                    break;
+
+            }
+            $delete = $this->conexion->query($sql);
+
+            $delete->execute();
+        }
+    }
+
+    function updateRescate($datos){
+        $update = $this->conexion->prepare("UPDATE ficha_animal
+         SET nombre = :nombre,
+         fechaNac = :fechaNac,
+         tamanyo = :tamanyo,
+         localidad = :localidad,
+         sexo = :sexo,
+         edad = :edad,
+         fechaIngreso = :fechaIngreso,
+         estadoAdop = :estadoAdop,
+         ult_despa = :ult_despa,
+         adoptante = :adoptante,
+         especie = :especie,
+         raza = :raza,
+         esterilizado = :esterilizado,
+         numchip = :numchip,
+         refugio = :refugio,
+         comentarios = :comentarios,
+         descripcion = :descripcion
+        WHERE id = :id"
+         );
+
+         $update -> bindValue(":nombre", $datos["nombre"]);
+         $update -> bindValue(":fechaNac", $datos["fechaNac"]);
+         $update -> bindValue(":tamanyo", $datos["tamanyo"]);
+         $update -> bindValue(":localidad", $datos["localidad"]);
+         $update -> bindValue(":sexo", $datos["sexo"]);
+         $update -> bindValue(":edad", $datos["edad"]);
+         $update -> bindValue(":fechaIngreso", $datos["fechaIng"]);
+         $update -> bindValue(":estadoAdop", $datos["estadoAdop"]);
+         $update -> bindValue(":ult_despa", $datos["ultDesp"]);
+         $update -> bindValue(":adoptante", $datos["selectAdoptante"]);
+         $update -> bindValue(":especie", $datos["especie"]);
+         $update -> bindValue(":raza", $datos["raza"]);
+         $update -> bindValue(":esterilizado", $datos["esterilizado"]);
+         $update -> bindValue(":refugio", $datos["refugio"]);
+         $update -> bindValue(":numchip", $datos["numchip"]);
+         $update -> bindValue(":comentarios", $datos["comentarios"]);
+         $update -> bindValue(":descripcion", $datos["descripcion"]);
+         $update -> bindValue(":id", $datos["id"]);
+
+         return $update->execute();
+
+
+    }
+
+    function eliminarRescate($id){
+        $delete = $this->conexion->query("DELETE FROM ficha_animal WHERE id = '$id'");
+    }
+
+    
     
    
 }

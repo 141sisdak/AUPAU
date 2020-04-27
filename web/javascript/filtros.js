@@ -28,7 +28,7 @@ $(function () {
         && validarParFechas(fechaNacDesde, fechaNacHasta)
         && validarParFechas(fechaUltDesde, fechaUltHasta)
         && validarNombre(nombre)){
-           
+            $("#formFiltros").submit(); 
         }else{
            event.preventDefault();
         }

@@ -72,9 +72,14 @@ $map = array(
         'action'=>'nuevoRescate',
         'nivel'=> 1
     ),
-    'modificarAnimal'=>array(
+    'modificarRescate'=>array(
         'controller'=>'Controller',
-        'action'=>'modificarAnimal',
+        'action'=>'modificarRescate',
+        'nivel'=> 1
+    ),
+    'eliminarRescate'=>array(
+        'controller'=>'Controller',
+        'action'=>'eliminarRescate',
         'nivel'=> 1
     )
     

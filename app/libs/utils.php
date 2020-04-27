@@ -74,5 +74,16 @@ function validarFechas($desde, $hasta){
     return $ok;
 }
 
+ function setearSindatos($dato, $campo){
+
+    if($dato=="Sin datos"){
+        $dato = null;
+    }else{
+        $dato = recoge($campo);
+    }
+
+    return $dato;
+ }
+
 
 ?>

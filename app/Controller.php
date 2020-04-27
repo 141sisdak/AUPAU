@@ -107,8 +107,9 @@ class Controller
                 error_log("Error producido el " . date("d-m-YY") . " a las " . date("H:m:s") . $e->getMessage() . PHP_EOL, 3, "logException.txt");
             //header('Location: index.php?ctl=error');
             }
-            
-            require __DIR__ . "/templates/fichaAnimal.php";
+           
+                require __DIR__ . "/templates/fichaAnimal.php";
+           
             
         }
     }
@@ -535,7 +536,10 @@ class Controller
     }
 
     public function modificarRescate(){
+        
         if (isset($_GET["id"])) {
+
+            $m = new Model();
             
             $params = array(
                 'ficha' => array(),
@@ -545,10 +549,87 @@ class Controller
             );
             
             try {
+
+                if(isset($_POST["modificar"])){
+
+                $datos = array();
+
+                $datos["id"] = $_GET["id"];
+                    
+                $datos["fechaNac"] = $_POST["fechaNacMod"];
+
+                $datos["nombre"] = setearSindatos($_POST["nombre"], "nombre");
+             
+                $datos["tamanyo"] = $_POST["mSelTamanyo"];
+
+                $datos["localidad"] = $_POST["selLocalidad"];
+
+                $datos["sexo"] = $_POST["radioSexo"];
+
+                $datos["edad"] = setearSindatos($_POST["edadMod"], "edadMod");
+
+                $datos["fechaIng"] = $_POST["fechaIngMod"];
+
+                $datos["estadoAdop"] = $_POST["radioAdoptado"];
+
+                $datos["ultDesp"] = $_POST["fechaUltMod"];
+
+                $datos["selectAdoptante"] = null;
+
+                $datos["especie"] = $_POST["selEspecie"];
+
+                $datos["raza"] = $_POST["modSelRaza"];
+
+                $datos["numchip"] = setearSindatos($_POST["numChip"], "numChip");
+
+                if($_POST["ckEsterilizado"]=="on"){
+                        $datos["esterilizado"] = "si";
+                }else{
+                        $datos["esterilizado"] = "no";
+                }
+                    
+
+                $datos["refugio"] = $_POST["selRefugio"];
+
+                $datos["comentarios"] = setearSindatos($_POST["modComentarios"], 'modComentarios');
+
+                $datos["descripcion"] = setearSindatos($_POST["modDescripcion"], 'modDescripcion'); 
+
+                $validacionNuevoRescate = new Validacion();
+        
+                $regla = array(
+                    array(
+                        'name' => 'nombre',
+                        'regla' => 'letras'
+                    ),
+                    array(
+                        'name' => 'edad',
+                        'regla' => 'numeric'
+                    ),
+                    array(
+                        'name' => 'numchip',
+                        'regla' => 'numeric,chip'
+                    )
+                );
+                    
+                    $validaciones = $validacionNuevoRescate->rules($regla, $datos);
+                    
+                            if ($validaciones === true) {
+                                if($m->updateRescate($datos)){
+                                    $params["mensaje"] = "Éxito en la modificación del rescate";
+                                }
+                            }
+
+                }
+                $params["tamanyos"] = $m->getTamanyos();
+                $params["localidades"] = $m->getLocalidades();
+                $params["refugios"] = $m->getRefugios();
                 
-                $m = new Model();
+                $params["especies"] = $m->getEspecies();
                 
                 $params["ficha"] = setearNulos($m->getAnimal($_GET["id"]));
+
+                $params["razas"] = $m->getRazasPorEspecie($params["ficha"]["especie"]);
                 
                 if (!$params["enfermedades"] = $m->getEnfermedadesPorId($_GET["id"])) {
                     $params["enfermedades"][0]["tipo"] = "Sin datos";
@@ -561,6 +642,8 @@ class Controller
                 if (!$params["vacunas"] = $m->getVacunasPorId($_GET["id"])) {
                     $params["vacunas"][0]["tipo"] = "Sin datos";
                 }
+
+                
                 
             }
             catch (Exception $e) {
@@ -572,8 +655,21 @@ class Controller
             //header('Location: index.php?ctl=error');
             }
             
-            require __DIR__ . "/templates/fichaAnimal.php";
+            require __DIR__ . "/templates/modRescate.php";
             
+        }
+    }
+
+    public function eliminarRescate(){
+        if(isset($_GET["id"])){
+
+            $m = new Model();
+
+            if($m->eliminarRescate($_GET["id"])){
+                $params["mensaje"] = "Rescate eliminado con éxito";
+            }
+            //Elimina correctamente, pero da error al recargar la página cuando intenta cargar los params del paginador
+            require __DIR__ . "/templates/rescate.php";
         }
     }
 }

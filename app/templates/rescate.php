@@ -19,9 +19,9 @@ if(isset($validacion->mensaje)){
 <!--***************************************************************************************************************-->
 <!--***************************************************************************************************************-->
 <!--***************************************************************************************************************-->
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Nuevo</button>
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#nuevoRescate">Nuevo</button>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="nuevoRescate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -259,9 +259,12 @@ foreach ($params['animales'] as $animal){
 
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     
-   <a class="dropdown-item" href="index.php?ctl=verAnimal&id=<?php echo $animal['id']?>">Ver ficha</a>
-   <a class="dropdown-item" href="index.php?ctl=modificarAnimal&id=<?php echo $animal['id']?>">Modificar</a>
-   <a class="dropdown-item" href="index.php?ctl=eliminarAnimal&id=<?php echo $animal['id']?>">Eliminar</a>
+   <a class="dropdown-item" href="index.php?ctl=verAnimal&id=<?php echo $animal['id']?>&mod=off" >Ver ficha</a>
+   <!---->
+   <a class="dropdown-item" href="index.php?ctl=modificarRescate&id=<?php echo $animal['id']?>">Modificar</a>
+  
+<!---->
+   <a class="dropdown-item" href="index.php?ctl=eliminarRescate&id=<?php echo $animal['id']?>">Eliminar</a>
    
 
   </div>
