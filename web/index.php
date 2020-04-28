@@ -3,7 +3,10 @@
 // carga del modelo y los controladores
 require_once __DIR__ . '/../app/Config.php';
 require_once __DIR__ . '/../app/Model.php';
-require_once __DIR__ . '/../app/Controller.php';
+
+require_once __DIR__ . '/../app/loginController.php';
+require_once __DIR__ . '/../app/inicioController.php';
+require_once __DIR__ . '/../app/rescateController.php';
 
 
 
@@ -43,42 +46,42 @@ if(isset($_SESSION['tiempo']) ) {
 $map = array(
     
     'inicio' => array(
-        'controller' => 'Controller',
+        'controller' => 'inicioController',
         'action' => 'inicio',
         'nivel' =>1
     ),
     'login'=>array(
-        'controller'=>'Controller',
+        'controller'=>'loginController',
         'action'=>'login',
         'nivel'=> 0
     ),
     'rescate'=>array(
-        'controller'=>'Controller',
+        'controller'=>'rescateController',
         'action'=>'rescate',
         'nivel'=> 1
     ),
     'verAnimal'=>array(
-        'controller'=>'Controller',
+        'controller'=>'rescateController',
         'action'=>'verAnimal',
         'nivel'=> 1
     ),
     'filtroRescate'=>array(
-        'controller'=>'Controller',
+        'controller'=>'rescateController',
         'action'=>'filtroRescate',
         'nivel'=> 1
     ),
     'nuevoRescate'=>array(
-        'controller'=>'Controller',
+        'controller'=>'rescateController',
         'action'=>'nuevoRescate',
         'nivel'=> 1
     ),
     'modificarRescate'=>array(
-        'controller'=>'Controller',
+        'controller'=>'rescateController',
         'action'=>'modificarRescate',
         'nivel'=> 1
     ),
     'eliminarRescate'=>array(
-        'controller'=>'Controller',
+        'controller'=>'rescateController',
         'action'=>'eliminarRescate',
         'nivel'=> 1
     )
@@ -110,7 +113,7 @@ if (method_exists($controlador['controller'], $controlador['action']) && $contro
 } else {
     //Si el usuario no tiene permiso para acceder a la páquina guardamos el registro en un archivo con su nombre,
     //la fecha y la página tanto si ha iniciado sesión como si no.
-    if($_SESSION["rol"]<=$controlador["nivel"]){
+    if($_SESSION["rol"]<$controlador["nivel"]){
        
         header("Status: 403 Forbidden");
         echo "<html><body><h1>No tienes permisos suficientes para realizar esa acción</h1><a href='index.php?ctl=inicio'>Volver</a></body></html>";
