@@ -210,8 +210,7 @@ if(isset($validacion->mensaje)){
     <li class="<?php if($params["pagina"]==1) echo "page-item disabled";else echo "disabled" ?>">
   </div>
 </div>
-<?php if(isset($_GET["ordenacion"])) echo $_GET["ordenacion"] ."<br>"?>
-<?php if(isset($_POST["filtrar"])) echo "tiene filtrar"; ?>
+
 </div>
 <div class="table-responsive-md">
 <table class="table">
@@ -301,11 +300,11 @@ foreach ($params['animales'] as $animal){
 ?>
 </table>
 
-<!--Mostramos la barra en caso de que hayan resultados-->
+<!--INICIO PAGINADOR-->
 <?php if($params["totalRegistros"]>1):?>
 <nav aria-label="Page navigation">
   <ul class= "pagination">
-    <!--Mostramos la barra en caso de que hayan resultados-->
+
     <li class="<?php if($params["pagina"]==1) echo "page-item disabled";else echo "disabled" ?>">
     <?php if($params["filtro"]=="off"):?> 
      <a class="page-link" href="index.php?ctl=rescate&pagina= <?php echo $params["pagina"]-1 ?> <?php if(isset($_GET["ordenacion"])) echo "&ordenacion=".$_GET["ordenacion"] ?> " aria-label="Next">
@@ -362,19 +361,10 @@ foreach ($params['animales'] as $animal){
   </ul>
 </nav>
 <?php endif; ?>
-<?php echo "Total registros: " . $params["totalRegistros"]."<br>" ?>
-<?php echo "Nº paginas: " . $params["numPaginas"]."<br>" ?>
-<?php echo "Pagina actual: " . (int)$params["pagina"]++ ."<br>" ?>
-<?php 
-if(isset($params["mensajeTabla"])){
-  ?>
-  <b><span style="color: red;"><?php echo $params['mensajeTabla'] ?></span></b>
-  <?php
-}
-?>
-
-
 </div>
+<!--FIN PAGINADOR-->
+
+<!--INICIO FORMULARIO-->
 <form class="form-horizontal "name="formFiltrosRescates" action="index.php?ctl=filtroRescate" method="post" id="formFiltros">
 <div>
 <h4>Fecha nacimiento:</h4>
@@ -529,5 +519,6 @@ if(isset($params["mensajeTabla"])){
 <button class="btn btn-primary" type="submit" name="filtrar">Filtrar</button>
 
 </form>
+<!--FIN FORMULARIO-->
 <?php $contenido = ob_get_clean() ?>
 <?php include 'layout.php' ?>

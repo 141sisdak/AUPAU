@@ -1,7 +1,8 @@
 <?php 
 
 class rescateController{
-    
+
+    //Esta funcion carga los datos completos del rescate y los muestra en su correspondiente template
     public function verAnimal()
     {
         if (isset($_GET["id"])) {
@@ -16,7 +17,7 @@ class rescateController{
             try {
                 
                 $m = new Model();
-                
+                //La funcion setear nulos pone el texto "Sin datos" a los rescates que tiene algun campo vacio
                 $params["ficha"] = setearNulos($m->getAnimal($_GET["id"]));
                 
                 if (!$params["enfermedades"] = $m->getEnfermedadesPorId($_GET["id"])) {
@@ -52,41 +53,46 @@ class rescateController{
     public function rescate()
     {
         
-
+//INICIO BLOQUE PAGINADOR
         $pagina = isset($_GET["pagina"]) ? (int)$_GET["pagina"] : 1;
 
         $regsPagina = 5;
 
         $inicio = ($pagina>1) ? (($pagina * $regsPagina)- $regsPagina) :0;
-        
+
+//FIN BLOQUE PAGINADOR
+
+    //Creo objeto Model para hacer consultas a la bd        
         $m = new Model();
 
+        //Inicializo la variable de la ordenacion
         $ordenacion = "";
         
 
         if(isset($_GET["ordenacion"])){
             
-        switch ($_GET["ordenacion"]) {
-            case 'fechaNac':
-                $ordenacion = "  ORDER BY fechaNac";
-                break;
-            case 'fechaIng':
-                $ordenacion = " ORDER BY fechaIngreso";
-                break;
-            case 'fechaDesp':
-                $ordenacion = " ORDER BY ult_despa";
-                break;
-            case 'edad':
-                $ordenacion = " ORDER BY edad";
-                break;
-            case 'nombre':
-                $ordenacion = " ORDER BY nombre";
-                break;
-        
-        }
+            //Segun el parametro pasado construiremos la consulta para la ordenacion
+            switch ($_GET["ordenacion"]) {
+                case 'fechaNac':
+                    $ordenacion = "  ORDER BY fechaNac";
+                    break;
+                case 'fechaIng':
+                    $ordenacion = " ORDER BY fechaIngreso";
+                    break;
+                case 'fechaDesp':
+                    $ordenacion = " ORDER BY ult_despa";
+                    break;
+                case 'edad':
+                    $ordenacion = " ORDER BY edad";
+                    break;
+                case 'nombre':
+                    $ordenacion = " ORDER BY nombre";
+                    break;
+            
+            }
        
     }
-
+    //Creamos la variable params para almacenar distintatas listas utilizadas en el FILTRO
         $params = array(
             'tamanyos' => $m->getTamanyos(),
             'localidades' => $m->getLocalidades(),
@@ -103,6 +109,7 @@ class rescateController{
 
                 setearNulosTabla($params["animales"]);
 
+                //Estas variables se usan para el paginador
                 $params["totalRegistros"] = $m->getRescatesTotal();                
                 $params["numPaginas"] = round($params["totalRegistros"] / $regsPagina);
                 $params["pagina"] = $pagina;

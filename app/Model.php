@@ -71,7 +71,7 @@ class Model extends PDO
         
 
     }
-
+//Funcion que devuleve la cantidad total de rescates para el paginador
     public function getRescatesTotal(){
         $select = $this->conexion->query("SELECT id FROM ficha_animal WHERE activo = 1");
 
@@ -100,7 +100,7 @@ if($ordenacion !=""){
             return false;
         }
     }
-
+//Si se ha esta filtrando necesitamos recuperar la consulta hecha
     public function getRescatesTotalFiltro($sql){
         if(isset($_GET["filtrar"])=='on'){
             $sql = $_COOKIE["consulta"];
@@ -111,7 +111,7 @@ if($ordenacion !=""){
 
         return $select->rowCount();
     }
-
+//Obtiene las enfermedades del animal por el id del rescate
     public function getEnfermedadesPorId($id){
         $select = $this->conexion->query("SELECT E.enfermedad as tipo, E.id
         FROM enfermedades_animal A INNER JOIN enfermedades E 
@@ -130,7 +130,7 @@ if($ordenacion !=""){
 
        
     }
-
+//Obtiene las vacunas del animal por el id del rescate
     public function getVacunasPorId($id){
         $select = $this->conexion->query("SELECT V.nombre AS tipo, V.id
         FROM vacunas_animal A 
@@ -148,7 +148,7 @@ if($ordenacion !=""){
             return false;
         }
     }
-
+//Obtiene los tratamientos del animal por el id del rescate
     public function getTratamientosPorId($id){
         $select = $this->conexion->query("SELECT T.tratamiento AS tipo, T.id
         FROM tratamientos_animal A
@@ -166,7 +166,7 @@ if($ordenacion !=""){
             return false;
         }
     }
-
+//Devuelve el animal del rescate por id
     public function getAnimal($id){
         $select = $this->conexion->query("SELECT 
         F.id,
@@ -199,7 +199,7 @@ if($ordenacion !=""){
 
         return $select->fetch();
     }
-
+//Obtiene los tamanyos
     public function getTamanyos(){
 
         $select = $this->conexion->query("SELECT * FROM tamanyos");
@@ -209,7 +209,7 @@ if($ordenacion !=""){
         return $select->fetchAll(PDO::FETCH_ASSOC);
 
     }
-
+//Obtiene las localidades
     public function getLocalidades(){
 
         $select = $this->conexion->query("SELECT * FROM localidades");
@@ -219,7 +219,7 @@ if($ordenacion !=""){
         return $select->fetchAll(PDO::FETCH_ASSOC);
 
     }
-
+//Obtiene las especies
    public function getEspecies(){
 
     $select = $this->conexion->query("SELECT * FROM especie");
@@ -229,6 +229,7 @@ if($ordenacion !=""){
     return $select->fetchAll(PDO::FETCH_ASSOC);
    }
 
+//Obtiene las razas
    public function getRazas(){
 
     $select = $this->conexion->query("SELECT * FROM raza");
@@ -237,7 +238,7 @@ if($ordenacion !=""){
 
     return $select->fetchAll(PDO::FETCH_ASSOC);
    }
-
+//Obtiene las reszas por especie
    public function getRazasPorEspecie($idEspecie){
 
     switch ($idEspecie) {
@@ -261,7 +262,7 @@ if($ordenacion !=""){
     return $select->fetchAll(PDO::FETCH_ASSOC);
 
    }
-
+//Obtiene los refugios
    public function getRefugios(){
 
     $select = $this->conexion->query("SELECT * FROM refugios");
@@ -270,7 +271,7 @@ if($ordenacion !=""){
 
     return $select->fetchAll(PDO::FETCH_ASSOC);
    }
-
+//Inserta un nuevo rescaste
    public function insertarRescate($datos){
        $insert= $this->conexion->prepare("INSERT INTO ficha_animal 
        (id, comentarios, descripcion, edad, especie, estadoAdop, fechaIngreso, fechaNac, ult_despa, esterilizado, nombre, numchip, raza, refugio, tamanyo, sexo, activo) 
@@ -297,7 +298,7 @@ if($ordenacion !=""){
 
        $insert->execute();
    }
-
+//Esta funcion devuelve el ultimo id del rescate para saber cual es el id del proximo
    function obtenerUltimoIdRescate($especie){
         $select = $this->conexion->query("SELECT id
          FROM ficha_animal 
@@ -307,14 +308,14 @@ if($ordenacion !=""){
         $select->execute();
         return $select->fetch(PDO::FETCH_ASSOC);
    }
-
+//Obtiene la lista de enfermedaddes
    function getEnfermedades(){
        $select = $this->conexion->query("SELECT * FROM enfermedades");
        $select->execute();
        return $select->fetchAll(PDO::FETCH_ASSOC);
 
    }
-
+//Obtiene todos los tratamientos
    function getTratamientos(){
     $select = $this->conexion->query("SELECT * FROM tratamientos");
     $select->execute();
@@ -322,6 +323,7 @@ if($ordenacion !=""){
 
 }
 
+//Obitene todas las vacunas
     function getVacunas(){
         $select = $this->conexion->query("SELECT * FROM vacunas");
     $select->execute();
@@ -335,12 +337,14 @@ if($ordenacion !=""){
         }
     }
     
+    //Inserta un array de vacunas segun el id del rescate pasado
     function insertarVacunasAnimal($id, $vacunas){
         foreach($vacunas as $vacuna){
             $insert = $this->conexion->query("INSERT INTO vacunas_animal (id_animal, id_vacuna) VALUES ('$id','$vacuna')");
             
         }
     }
+    //Inserta un array de tratamientos segun el id del rescate pasado
     function insertarTratamientosAnimal($id, $tratamientos){
                 
         foreach($tratamientos as $tramiento){
@@ -348,7 +352,7 @@ if($ordenacion !=""){
         }
         
     }
-
+//Elimina un array de envatras(enfermedades, vacunas o tratamientos)
     function eliminarEnvatra($id, $envatras, $tipo){
         foreach($envatras as $envatra){
             $sql = "DELETE FROM";
@@ -371,7 +375,7 @@ if($ordenacion !=""){
             $delete->execute();
         }
     }
-
+//Funcion que actualiza datos del rescate
     function updateRescate($datos){
         $update = $this->conexion->prepare("UPDATE ficha_animal
          SET nombre = :nombre,
@@ -417,9 +421,9 @@ if($ordenacion !=""){
 
 
     }
-
+//Para eliminar un rescate seteamos el campo activo a 0
     function eliminarRescate($id){
-        $delete = $this->conexion->query("DELETE FROM ficha_animal WHERE id = '$id'");
+        $delete = $this->conexion->query("UPDATE ficha_animal SET activo = 0 WHERE id = '$id'");
     }
 
     
